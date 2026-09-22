@@ -2516,7 +2516,8 @@ input {
 
 /* Header */
 
-.add-waste-header {
+.add-waste-header { 
+  position: relative;
   max-width: 850px;
   margin: 0 auto 30px;
   display: flex;
@@ -3310,4 +3311,40 @@ input {
     grid-template-columns: 1fr;
   }
 
+}
+
+.back-button {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  min-width: 90px;
+  height: 38px;
+
+  padding: 0 14px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+
+  background: #ffffff;
+  color: #374151;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+  z-index: 10;
+
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+  transform: translateX(-2px);
 }

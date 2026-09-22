@@ -125,10 +125,10 @@ const [qrValue, setQrValue] = useState("MEDISORT-WASTE-AAROGYA-001");
 
 
   // Open Add Waste page
-  if (page === "addWaste") {
-    return <AddWaste />;
-  }
-
+ 
+if (page === "addWaste") {
+  return <AddWaste onBack={() => setPage("dashboard")} />;
+}
   const wasteData = [
     {
       id: "MED-004",

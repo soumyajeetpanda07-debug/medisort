@@ -1,5 +1,5 @@
 import { useState } from "react";
-import FrontPage from "./FrontPage";
+import FrontPage from "./frontpage";
 import HospitalDashboard from "./pages/hospital/HospitalDashboard";
 import CollectorDashboard from "./pages/collector/collectorDashboard";
 import AdminDashboard from "./pages/admin/AdminDashboard";

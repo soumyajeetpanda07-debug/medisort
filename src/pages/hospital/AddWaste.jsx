@@ -3,7 +3,7 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase";
 import "../../App.css";
 
-function AddWaste() {
+function AddWaste({ onBack }) {
   const [wasteType, setWasteType] = useState("");
   const [weight, setWeight] = useState("");
   const [category, setCategory] = useState("");
@@ -93,8 +93,29 @@ function AddWaste() {
   return (
     <div className="add-waste-page">
 
+<button
+  type="button"
+  className="back-button"
+  onClick={onBack}
+>
+  ← Back 
+</button>
+
+
+
+
+
+
       {/* HEADER */}
       <div className="add-waste-header">
+
+
+
+
+
+
+
+
         <div className="waste-title-icon">
           🗑️
         </div>
