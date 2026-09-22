@@ -1,0 +1,1124 @@
+/* =========================================================
+   MEDISORT — CLEAN SIH LANDING PAGE
+   ========================================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f4fbfa;
+  color: #10233f;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.landing-page {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.navbar {
+  height: 86px;
+  width: 100%;
+  padding: 0 5%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid #e5eeee;
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background: linear-gradient(
+    135deg,
+    #10b981,
+    #0ea5a4
+  );
+
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2);
+}
+
+.brand h2 {
+  font-size: 26px;
+  color: #0b1933;
+}
+
+.brand span {
+  display: block;
+  margin-top: 2px;
+
+  font-size: 11px;
+  color: #617083;
+}
+
+.navbar nav {
+  display: flex;
+  gap: 36px;
+}
+
+.navbar nav a {
+  text-decoration: none;
+  color: #17243a;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  padding: 8px 0;
+
+  transition: 0.2s;
+}
+
+.navbar nav a:hover,
+.navbar nav a.active {
+  color: #079669;
+}
+
+.navbar nav a.active {
+  border-bottom: 3px solid #079669;
+}
+
+.nav-button {
+  border: none;
+
+  padding: 13px 27px;
+  border-radius: 30px;
+
+  background: #079b69;
+  color: white;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  box-shadow: 0 8px 20px rgba(7, 155, 105, 0.18);
+
+  transition: 0.2s;
+}
+
+.nav-button:hover {
+  transform: translateY(-2px);
+  background: #057e57;
+}
+
+
+/* =========================================================
+   HERO SECTION
+   ========================================================= */
+
+.hero {
+  min-height: 510px;
+
+  padding: 50px 5% 25px;
+
+  display: flex;
+  align-items: center;
+
+  background:
+    radial-gradient(
+      circle at 80% 30%,
+      #d8f5ff 0%,
+      transparent 38%
+    ),
+    linear-gradient(
+      120deg,
+      #ffffff,
+      #effcf9
+    );
+}
+
+.hero-left {
+  width: 47%;
+
+  position: relative;
+  z-index: 5;
+}
+
+.tagline {
+  display: inline-flex;
+
+  gap: 10px;
+  align-items: center;
+
+  padding: 10px 17px;
+
+  border-radius: 30px;
+
+  background: #e4f8f1;
+  color: #087e5b;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  margin-bottom: 25px;
+}
+
+.tagline span {
+  color: #a5b8b2;
+}
+
+.hero h1 {
+  font-size: clamp(42px, 5vw, 70px);
+
+  line-height: 1.02;
+
+  letter-spacing: -2px;
+
+  color: #0d203d;
+
+  margin-bottom: 20px;
+}
+
+.hero h1 span {
+  color: #08a26c;
+}
+
+.hero-left > p {
+  max-width: 600px;
+
+  color: #526277;
+
+  font-size: 17px;
+
+  line-height: 1.65;
+
+  margin-bottom: 28px;
+}
+
+
+/* =========================================================
+   HERO BUTTONS
+   ========================================================= */
+
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+.primary-button {
+  border: none;
+
+  padding: 15px 27px;
+
+  border-radius: 12px;
+
+  background: #079b69;
+  color: white;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  box-shadow: 0 10px 25px rgba(7, 155, 105, 0.2);
+
+  transition: 0.2s;
+}
+
+.primary-button:hover {
+  transform: translateY(-2px);
+  background: #057e57;
+}
+
+.secondary-button {
+  padding: 14px 24px;
+
+  border: 1.5px solid #079b69;
+
+  border-radius: 12px;
+
+  background: white;
+  color: #07845b;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  transition: 0.2s;
+}
+
+.secondary-button:hover {
+  background: #eafff7;
+}
+
+
+/* =========================================================
+   HERO ILLUSTRATION
+   ========================================================= */
+
+.hero-right {
+  width: 53%;
+
+  min-height: 450px;
+
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.hospital-circle {
+  width: 500px;
+  height: 430px;
+
+  border-radius: 50% 50% 45% 55%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #bceeff,
+      #e2faf5
+    );
+
+  position: relative;
+
+  overflow: hidden;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  box-shadow:
+    inset 0 0 50px rgba(255, 255, 255, 0.7);
+}
+
+.hospital-building {
+  width: 260px;
+  height: 230px;
+
+  background: white;
+
+  border-radius: 8px;
+
+  position: relative;
+
+  padding-top: 45px;
+
+  text-align: center;
+
+  box-shadow:
+    0 15px 30px rgba(40, 70, 80, 0.12);
+}
+
+.hospital-cross {
+  position: absolute;
+
+  top: 15px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  color: #08a56d;
+
+  font-size: 38px;
+  font-weight: bold;
+}
+
+.hospital-building h2 {
+  color: #168c6b;
+
+  font-size: 20px;
+
+  margin-bottom: 20px;
+}
+
+.hospital-windows {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 9px;
+
+  padding: 0 30px;
+}
+
+.hospital-windows span {
+  height: 28px;
+
+  background: #77cde4;
+
+  border: 3px solid #d6edf3;
+
+  border-radius: 3px;
+}
+
+.trees {
+  position: absolute;
+
+  bottom: 45px;
+  left: 30px;
+
+  font-size: 45px;
+
+  letter-spacing: -18px;
+}
+
+.quote {
+  position: absolute;
+
+  top: 30px;
+  right: 0;
+
+  width: 190px;
+
+  font-family: Georgia, serif;
+
+  font-style: italic;
+
+  font-size: 22px;
+  font-weight: 700;
+
+  line-height: 1.25;
+
+  color: #14243c;
+}
+
+.truck {
+  position: absolute;
+
+  right: 15px;
+  bottom: 75px;
+
+  font-size: 105px;
+
+  filter:
+    drop-shadow(
+      0 12px 10px rgba(0, 0, 0, 0.15)
+    );
+}
+
+.waste-bins {
+  position: absolute;
+
+  bottom: 45px;
+  left: 35%;
+
+  display: flex;
+
+  gap: 7px;
+
+  transform: translateX(-50%);
+}
+
+.bin {
+  width: 38px;
+  height: 50px;
+
+  border-radius: 6px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+
+  font-size: 18px;
+  font-weight: bold;
+
+  box-shadow:
+    0 7px 10px rgba(0, 0, 0, 0.12);
+}
+
+.bin.yellow {
+  background: #eab308;
+}
+
+.bin.red {
+  background: #dc2626;
+}
+
+.bin.white {
+  background: #e8eef0;
+  color: #17243a;
+}
+
+.bin.blue {
+  background: #147bd1;
+}
+
+.bin.black {
+  background: #263238;
+}
+
+
+/* =========================================================
+   ROLE CARDS
+   ========================================================= */
+
+.roles {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 22px;
+
+  padding: 10px 5% 22px;
+
+  background: #f4fbfa;
+}
+
+.role-card {
+  min-height: 95px;
+
+  padding: 20px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 17px;
+
+  border-radius: 18px;
+
+  border: 1px solid rgba(0, 0, 0, 0.04);
+
+  transition: 0.2s;
+}
+
+.role-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 15px 30px rgba(30, 80, 80, 0.1);
+}
+
+.role-card.hospital {
+  background: #dcfaeb;
+}
+
+.role-card.collector {
+  background: #e0f1ff;
+}
+
+.role-card.admin {
+  background: #eee9ff;
+}
+
+.role-icon {
+  width: 55px;
+  height: 55px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.7);
+
+  font-size: 29px;
+}
+
+.role-content {
+  flex: 1;
+}
+
+.role-content h3 {
+  font-size: 18px;
+
+  margin-bottom: 5px;
+}
+
+.role-content p {
+  font-size: 13px;
+
+  color: #526277;
+}
+
+.role-arrow {
+  width: 36px;
+  height: 36px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: #079b69;
+
+  color: white;
+
+  font-size: 19px;
+}
+
+.collector .role-arrow {
+  background: #1677d2;
+}
+
+.admin .role-arrow {
+  background: #6134d5;
+}
+
+
+/* =========================================================
+   IMPACT STRIP
+   ========================================================= */
+
+.impact-strip {
+  margin: 0 5% 20px;
+
+  min-height: 100px;
+
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  align-items: center;
+
+  background: white;
+
+  border: 1px solid #e1eeee;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 8px 25px rgba(30, 80, 80, 0.05);
+}
+
+.impact-item {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 15px;
+
+  min-height: 55px;
+
+  border-right: 1px solid #dce9e8;
+}
+
+.impact-item:last-child {
+  border-right: none;
+}
+
+.impact-icon {
+  width: 50px;
+  height: 50px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #e7f8f3;
+
+  font-size: 25px;
+}
+
+.impact-item strong,
+.impact-item span {
+  display: block;
+}
+
+.impact-item strong {
+  font-size: 16px;
+}
+
+.impact-item span {
+  color: #536277;
+
+  font-size: 14px;
+
+  margin-top: 3px;
+}
+
+
+/* =========================================================
+   HOW IT WORKS
+   ========================================================= */
+
+.how-section {
+  margin: 0 5% 25px;
+
+  padding: 25px 30px;
+
+  background: white;
+
+  border: 1px solid #e1eeee;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 8px 25px rgba(30, 80, 80, 0.05);
+}
+
+.how-header {
+  margin-bottom: 25px;
+}
+
+.how-header h2 {
+  font-size: 27px;
+
+  color: #11233e;
+}
+
+.how-header p {
+  color: #657487;
+
+  margin-top: 5px;
+}
+
+.steps {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 12px;
+}
+
+.step {
+  flex: 1;
+
+  max-width: 220px;
+}
+
+.step-top {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 12px;
+}
+
+.step-number {
+  width: 36px;
+  height: 36px;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background: #079b69;
+
+  color: white;
+
+  font-size: 16px;
+
+  font-weight: bold;
+}
+
+.step-icon {
+  font-size: 25px;
+}
+
+.step h3 {
+  font-size: 16px;
+}
+
+.step h4 {
+  font-size: 14px;
+
+  color: #079b69;
+
+  margin-top: 2px;
+}
+
+.step p {
+  color: #69788a;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+
+  margin-top: 8px;
+}
+
+.arrow {
+  color: #12a875;
+
+  font-size: 28px;
+
+  margin-top: 25px;
+}
+
+
+/* =========================================================
+   ABOUT SECTION
+   ========================================================= */
+
+.about-section {
+  margin: 0 5% 25px;
+
+  padding: 32px;
+
+  display: grid;
+
+  grid-template-columns: 1fr 1.5fr;
+
+  gap: 35px;
+
+  align-items: center;
+
+  background:
+    linear-gradient(
+      120deg,
+      #eefaf6,
+      #f5fbff
+    );
+
+  border: 1px solid #dfebe8;
+
+  border-radius: 20px;
+}
+
+.section-label {
+  font-size: 12px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+
+  color: #079b69;
+}
+
+.about-section h2 {
+  margin-top: 9px;
+
+  font-size: 28px;
+
+  color: #122238;
+}
+
+.about-section p {
+  color: #68788a;
+
+  line-height: 1.7;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer {
+  min-height: 70px;
+
+  padding: 20px 5%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  color: #596a7c;
+
+  font-size: 13px;
+
+  border-top: 1px solid #dcebea;
+
+  background: #effbf8;
+}
+
+.footer-brand {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+.footer-brand strong {
+  color: #0c203b;
+
+  font-size: 17px;
+}
+
+.footer-logo {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: #079b69;
+
+  color: white;
+
+  font-weight: bold;
+}
+
+.footer-divider {
+  margin: 0 10px;
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+  .navbar nav {
+    gap: 18px;
+  }
+
+  .hero {
+    padding-left: 4%;
+    padding-right: 4%;
+  }
+
+  .hero h1 {
+    font-size: 48px;
+  }
+
+  .hospital-circle {
+    width: 430px;
+    height: 390px;
+  }
+
+  .quote {
+    right: -10px;
+
+    font-size: 18px;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE — MOBILE/TABLET
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+  .navbar {
+    height: auto;
+
+    padding: 15px 5%;
+
+    gap: 15px;
+
+    flex-wrap: wrap;
+  }
+
+  .navbar nav {
+    order: 3;
+
+    width: 100%;
+
+    justify-content: center;
+
+    gap: 22px;
+  }
+
+  .hero {
+    flex-direction: column;
+
+    text-align: center;
+
+    padding-top: 35px;
+  }
+
+  .hero-left {
+    width: 100%;
+  }
+
+  .hero-left > p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+  }
+
+  .hero-right {
+    width: 100%;
+
+    margin-top: 30px;
+  }
+
+  .roles {
+    grid-template-columns: 1fr;
+  }
+
+  .impact-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .impact-item:nth-child(2) {
+    border-right: none;
+  }
+
+  .impact-item:nth-child(3),
+  .impact-item:nth-child(4) {
+    border-top: 1px solid #dce9e8;
+  }
+
+  .steps {
+    flex-direction: column;
+  }
+
+  .step {
+    max-width: 100%;
+  }
+
+  .arrow {
+    display: none;
+  }
+
+  .about-section {
+    grid-template-columns: 1fr;
+  }
+
+  footer {
+    flex-direction: column;
+
+    gap: 12px;
+
+    text-align: center;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+   ========================================================= */
+
+@media (max-width: 550px) {
+
+  .brand h2 {
+    font-size: 21px;
+  }
+
+  .brand span {
+    font-size: 9px;
+  }
+
+  .navbar nav {
+    overflow-x: auto;
+
+    justify-content: flex-start;
+  }
+
+  .navbar nav a {
+    font-size: 13px;
+  }
+
+  .nav-button {
+    padding: 10px 17px;
+
+    font-size: 13px;
+  }
+
+  .tagline {
+    font-size: 11px;
+  }
+
+  .hero h1 {
+    font-size: 39px;
+  }
+
+  .hero-left > p {
+    font-size: 14px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+  }
+
+  .hospital-circle {
+    width: 340px;
+    height: 320px;
+  }
+
+  .hospital-building {
+    width: 190px;
+    height: 180px;
+  }
+
+  .truck {
+    font-size: 65px;
+  }
+
+  .quote {
+    width: 120px;
+
+    font-size: 14px;
+  }
+
+  .waste-bins {
+    left: 32%;
+  }
+
+  .bin {
+    width: 27px;
+    height: 37px;
+
+    font-size: 12px;
+  }
+
+  .impact-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .impact-item {
+    border-right: none;
+
+    border-bottom: 1px solid #dce9e8;
+  }
+
+  .impact-item:last-child {
+    border-bottom: none;
+  }
+
+  .about-section {
+    padding: 24px;
+  }
+}
