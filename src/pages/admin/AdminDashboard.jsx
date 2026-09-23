@@ -311,6 +311,23 @@ function AdminDashboard() {
   );
 });
 
+const recentWasteRecords = [...wasteRecords]
+  .sort((a, b) => {
+    const timeA = a.createdAt?.toDate
+      ? a.createdAt.toDate().getTime()
+      : 0;
+
+    const timeB = b.createdAt?.toDate
+      ? b.createdAt.toDate().getTime()
+      : 0;
+
+    return timeB - timeA;
+  })
+  .slice(0, 5);
+
+
+
+
 const totalWasteWeight = wasteRecords.reduce(
   (total, record) => total + (Number(record.weight) || 0),
   0
@@ -321,6 +338,46 @@ const wasteCategories = new Set(
     .map((record) => record.category)
     .filter(Boolean)
 ).size;
+
+const reportingHospitals = new Set(
+  wasteRecords
+    .map((record) => record.hospital)
+    .filter(Boolean)
+).size;
+const categoryCounts = wasteRecords.reduce((counts, record) => {
+  const category = record.category;
+
+  if (category) {
+    counts[category] = (counts[category] || 0) + 1;
+  }
+
+  return counts;
+}, {});
+
+const categoryWeights = wasteRecords.reduce((weights, record) => {
+  const category = record.category;
+  const weight = Number(record.weight) || 0;
+
+  if (category) {
+    weights[category] = (weights[category] || 0) + weight;
+  }
+
+  return weights;
+}, {});
+
+const categoryWeightPercentages = Object.entries(categoryWeights).reduce(
+  (percentages, [category, weight]) => {
+    percentages[category] =
+      totalWasteWeight > 0
+        ? (weight / totalWasteWeight) * 100
+        : 0;
+
+    return percentages;
+  },
+  {}
+)
+
+
 
   // =========================================================
   // DASHBOARD
@@ -1081,34 +1138,314 @@ const wasteCategories = new Set(
             </div>
 
           </div>
-        ) : adminPage === "reports" ? (
+        ) : 
+           adminPage === "reports" ? (
+
   <div className="reports-page">
 
+    {/* ================= REPORT HEADER ================= */}
+
     <header className="reports-header">
-      <p className="admin-eyebrow">
-        MediSort Administration
-      </p>
 
-      <h1>Reports & Analytics</h1>
+      <div>
+        <p className="admin-eyebrow">
+          MEDISORT ADMINISTRATION
+        </p>
 
-      <p>
-        View medical waste collection and management insights.
-      </p>
+        <h1>
+          Reports & Analytics
+        </h1>
+
+        <p className="reports-subtitle">
+          View medical waste collection and management insights.
+        </p>
+      </div>
+
     </header>
 
-    <div className="reports-empty">
-      <span>📊</span>
 
-      <h2>Reports Coming Next</h2>
+    {/* ================= SUMMARY CARDS ================= */}
 
-      <p>
-        Waste analytics and reporting tools will appear here.
-      </p>
-    </div>
+    <section className="reports-summary-grid">
+
+      <div className="reports-summary-card">
+
+        <div className="reports-summary-icon">
+          📋
+        </div>
+
+        <div>
+          <p>Total Waste Records</p>
+
+          <strong>
+            {wasteRecords.length}
+          </strong>
+        </div>
+
+      </div>
+
+
+      <div className="reports-summary-card">
+
+        <div className="reports-summary-icon">
+          ⚖️
+        </div>
+
+        <div>
+          <p>Total Waste Weight</p>
+
+          <strong>
+            {totalWasteWeight.toFixed(1)} kg
+          </strong>
+        </div>
+
+      </div>
+
+
+      <div className="reports-summary-card">
+
+        <div className="reports-summary-icon">
+          🏥
+        </div>
+
+        <div>
+          <p>Hospitals Reporting</p>
+
+          <strong>
+            {reportingHospitals}
+          </strong>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    {/* ================= MAIN REPORT GRID ================= */}
+
+    <section className="reports-main-grid">
+
+
+      {/* ================= CATEGORY ANALYTICS ================= */}
+
+      <div className="reports-panel category-panel">
+
+        <div className="reports-panel-header">
+
+          <div>
+            <h2>Waste Category Distribution</h2>
+
+            <p>
+              Breakdown of recorded waste by category
+            </p>
+          </div>
+
+          <span className="reports-live-badge">
+            ● Live
+          </span>
+
+        </div>
+
+
+        <div className="category-report-list">
+
+          {Object.entries(categoryCounts).length === 0 ? (
+
+            <div className="reports-empty">
+              No waste category data available.
+            </div>
+
+          ) : (
+
+            Object.entries(categoryCounts).map(
+              ([category, count]) => {
+
+                const weight =
+                  categoryWeights[category] || 0;
+
+                const percentage =
+                  categoryWeightPercentages[category] || 0;
+
+                return (
+
+                  <div
+                    className="category-report-item"
+                    key={category}
+                  >
+
+                    <div className="category-report-top">
+
+                      <div className="category-report-name">
+
+                        <span
+                          className={`category-color-dot ${category.toLowerCase()}`}
+                        ></span>
+
+                        <strong>
+                          {category}
+                        </strong>
+
+                      </div>
+
+
+                      <div className="category-report-values">
+
+                        <span>
+                          {count}{" "}
+                          {count === 1
+                            ? "record"
+                            : "records"}
+                        </span>
+
+                        <strong>
+                          {weight.toFixed(1)} kg
+                        </strong>
+
+                      </div>
+
+                    </div>
+
+
+                    <div className="category-progress">
+
+                      <div
+                        className={`category-progress-fill ${category.toLowerCase()}`}
+                        style={{
+                          width: `${percentage}%`,
+                        }}
+                      ></div>
+
+                    </div>
+
+
+                    <div className="category-percentage">
+                      {percentage.toFixed(1)}% of total weight
+                    </div>
+
+                  </div>
+
+                );
+              }
+            )
+
+          )}
+
+        </div>
+
+      </div>
+
+
+      {/* ================= RECENT ACTIVITY ================= */}
+
+      <div className="reports-panel recent-panel">
+
+        <div className="reports-panel-header">
+
+          <div>
+            <h2>Recent Waste Activity</h2>
+
+            <p>
+              Latest waste records submitted by hospitals
+            </p>
+          </div>
+
+          <span className="reports-count-badge">
+            {recentWasteRecords.length}
+          </span>
+
+        </div>
+
+
+        <div className="recent-waste-list">
+
+          {recentWasteRecords.length === 0 ? (
+
+            <div className="reports-empty">
+              No recent waste records.
+            </div>
+
+          ) : (
+
+            recentWasteRecords.map((record) => (
+
+              <div
+                className="recent-waste-item"
+                key={record.id}
+              >
+
+                <div className="recent-waste-icon">
+                  ♻️
+                </div>
+
+
+                <div className="recent-waste-info">
+
+                  <strong>
+                    {record.wasteType || "Unknown Waste"}
+                  </strong>
+
+                  <span>
+                    {record.hospital || "Unknown Hospital"}
+                  </span>
+
+                </div>
+
+
+                <div className="recent-waste-right">
+
+                  <strong>
+                    {Number(record.weight) || 0} kg
+                  </strong>
+
+                  <span
+                    className={`recent-category ${(
+                      record.category || ""
+                    ).toLowerCase()}`}
+                  >
+                    {record.category || "—"}
+                  </span>
+
+                </div>
+
+              </div>
+
+            ))
+
+          )}
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    {/* ================= HOSPITAL SUMMARY ================= */}
+
+    <section className="reports-hospital-summary">
+
+      <div className="hospital-summary-icon">
+        🏥
+      </div>
+
+      <div>
+        <p>Hospitals Reporting</p>
+
+        <strong>
+          {reportingHospitals}
+        </strong>
+      </div>
+
+      <span className="hospital-summary-status">
+        Active
+      </span>
+
+    </section>
+
 
   </div>
-        ) : (
 
+) : (
           // =================================================
           // DASHBOARD PAGE
           // FIX: Wrapped multiple siblings in <> fragment

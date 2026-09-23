@@ -1928,3 +1928,1841 @@ grid-template-columns: 2fr 1fr 1fr 1fr;
 }
 
 
+/* ================================
+   REPORTS SUMMARY CARDS
+================================ */
+
+.reports-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.reports-summary-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #e5eaf0;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  transition: 0.2s ease;
+}
+
+.reports-summary-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 5px 14px rgba(15, 23, 42, 0.07);
+}
+
+.reports-summary-card > span {
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  background: #eff6ff;
+  font-size: 21px;
+}
+
+.reports-summary-card p {
+  margin: 0 0 5px;
+  color: #718096;
+  font-size: 13px;
+}
+
+.reports-summary-card strong {
+  color: #172033;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .reports-summary-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+
+/* ================================
+   WASTE CATEGORY REPORT
+================================ */
+
+.category-report-card {
+  margin-top: 20px;
+  padding: 22px;
+  background: #ffffff;
+  border: 1px solid #e5eaf0;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+.category-report-header {
+  margin-bottom: 18px;
+}
+
+.category-report-header h2 {
+  margin: 0 0 5px;
+  color: #172033;
+  font-size: 18px;
+}
+
+.category-report-header p {
+  margin: 0;
+  color: #718096;
+  font-size: 14px;
+}
+
+.category-report-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.category-report-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  .category-report-bar {
+  grid-column: 1 / -1;
+}
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 14px 16px;
+  border: 1px solid #e5eaf0;
+  border-radius: 10px;
+  background: #fafbfc;
+}
+
+.category-report-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.category-report-name span {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: #eff6ff;
+  font-size: 17px;
+}
+
+.category-report-name strong {
+  color: #172033;
+  font-size: 14px;
+}
+
+.category-report-count {
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.category-report-empty {
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+  color: #718096;
+  font-size: 14px;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .category-report-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+
+
+/* Category report statistics */
+
+.category-report-stats {
+  width: 100%;
+  justify-content: space-between;
+}
+
+
+
+
+
+
+
+
+.category-report-stats {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.category-report-stats span {
+  color: #718096;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.category-report-stats strong {
+  min-width: 70px;
+  text-align: right;
+  color: #172033;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* ================================
+   CATEGORY WEIGHT BARS
+================================ */
+
+.category-report-bar {
+  width: 100%;
+  height: 8px;
+  margin-top: 10px;
+  background: #e9eef5;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.category-report-bar-fill {
+  height: 100%;
+  min-width: 2px;
+  background: #2563eb;
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+
+/* ================================
+   RECENT WASTE ACTIVITY
+================================ */
+
+.recent-waste-card {
+  margin-top: 20px;
+  padding: 22px;
+  background: #ffffff;
+  border: 1px solid #e5eaf0;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+.recent-waste-header {
+  margin-bottom: 18px;
+}
+
+.recent-waste-header h2 {
+  margin: 0 0 5px;
+  color: #172033;
+  font-size: 18px;
+}
+
+.recent-waste-header p {
+  margin: 0;
+  color: #718096;
+  font-size: 14px;
+}
+
+.recent-waste-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.recent-waste-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 16px;
+  border: 1px solid #e5eaf0;
+  border-radius: 10px;
+  background: #fafbfc;
+  transition: 0.2s ease;
+}
+
+.recent-waste-row:hover {
+  border-color: #cbd5e1;
+  background: #ffffff;
+}
+
+.recent-waste-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.recent-waste-icon {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: #eff6ff;
+  font-size: 18px;
+}
+
+.recent-waste-main strong {
+  display: block;
+  margin-bottom: 3px;
+  color: #172033;
+  font-size: 14px;
+}
+
+.recent-waste-main p {
+  margin: 0;
+  color: #718096;
+  font-size: 12px;
+}
+
+.recent-waste-category {
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.recent-waste-weight {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.recent-waste-weight span {
+  color: #718096;
+  font-size: 12px;
+}
+
+.recent-waste-weight strong {
+  color: #172033;
+  font-size: 14px;
+}
+
+.recent-waste-empty {
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+  color: #718096;
+  font-size: 14px;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .recent-waste-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .recent-waste-category,
+  .recent-waste-weight {
+    margin-left: 50px;
+  }
+}
+
+
+
+/* =========================================================
+   MEDISORT REPORTS - CLEAN HOSPITAL ADMIN UI
+   Step 7.11 Reports Redesign
+========================================================= */
+
+/* ---------- MAIN REPORT PAGE ---------- */
+
+.reports-page {
+  width: 100% !important;
+  max-width: 1250px !important;
+  margin: 0 auto !important;
+  padding: 28px 32px 45px !important;
+  box-sizing: border-box !important;
+}
+
+/* ---------- REPORT HEADER ---------- */
+
+.reports-header {
+  margin-bottom: 26px !important;
+}
+
+.reports-header .admin-eyebrow {
+  margin: 0 0 7px !important;
+  color: #2563eb !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+.reports-header h1 {
+  margin: 0 0 7px !important;
+  color: #172033 !important;
+  font-size: 30px !important;
+  line-height: 1.2 !important;
+  font-weight: 750 !important;
+}
+
+.reports-header p {
+  margin: 0 !important;
+  color: #718096 !important;
+  font-size: 14px !important;
+}
+
+
+/* =========================================================
+   SUMMARY CARDS
+========================================================= */
+
+.reports-summary-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+  width: 100% !important;
+  margin: 0 0 22px !important;
+}
+
+.reports-summary-card {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 15px !important;
+  min-height: 105px !important;
+  padding: 20px !important;
+  box-sizing: border-box !important;
+
+  background: #ffffff !important;
+  border: 1px solid #e6ebf2 !important;
+  border-radius: 16px !important;
+
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.045) !important;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease !important;
+}
+
+.reports-summary-card:hover {
+  transform: translateY(-2px) !important;
+  border-color: #d6deea !important;
+  box-shadow: 0 9px 25px rgba(15, 23, 42, 0.08) !important;
+}
+
+.reports-summary-card > span {
+  width: 50px !important;
+  height: 50px !important;
+  min-width: 50px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  border-radius: 13px !important;
+  background: #eff6ff !important;
+
+  font-size: 21px !important;
+}
+
+.reports-summary-card p {
+  margin: 0 0 6px !important;
+  color: #718096 !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+.reports-summary-card strong {
+  display: block !important;
+  color: #172033 !important;
+  font-size: 24px !important;
+  line-height: 1.1 !important;
+  font-weight: 750 !important;
+}
+
+
+/* =========================================================
+   REPORT CONTENT
+========================================================= */
+
+.category-report-card,
+.recent-waste-card {
+  width: 100% !important;
+  box-sizing: border-box !important;
+
+  background: #ffffff !important;
+  border: 1px solid #e6ebf2 !important;
+  border-radius: 18px !important;
+
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.045) !important;
+}
+
+
+/* =========================================================
+   CATEGORY DISTRIBUTION
+========================================================= */
+
+.category-report-card {
+  margin-top: 0 !important;
+  padding: 24px !important;
+}
+
+.category-report-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 20px !important;
+}
+
+.category-report-header h2 {
+  margin: 0 0 5px !important;
+  color: #172033 !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+}
+
+.category-report-header p {
+  margin: 0 !important;
+  color: #718096 !important;
+  font-size: 13px !important;
+}
+
+
+/* ---------- CATEGORY LIST ---------- */
+
+.category-report-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 11px !important;
+}
+
+.category-report-row {
+  display: grid !important;
+  grid-template-columns: minmax(150px, 1fr) auto !important;
+  grid-template-rows: auto auto !important;
+
+  align-items: center !important;
+  column-gap: 22px !important;
+  row-gap: 9px !important;
+
+  width: 100% !important;
+  padding: 14px 16px !important;
+  box-sizing: border-box !important;
+
+  background: #fafbfc !important;
+  border: 1px solid #edf0f4 !important;
+  border-radius: 12px !important;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease !important;
+}
+
+.category-report-row:hover {
+  background: #ffffff !important;
+  border-color: #dbe3ed !important;
+}
+
+.category-report-name {
+  display: flex !important;
+  align-items: center !important;
+  gap: 11px !important;
+  min-width: 0 !important;
+}
+
+.category-report-name span {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  border-radius: 10px !important;
+  background: #eff6ff !important;
+
+  font-size: 17px !important;
+}
+
+.category-report-name strong {
+  color: #172033 !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+}
+
+.category-report-stats {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 20px !important;
+  white-space: nowrap !important;
+}
+
+.category-report-stats span {
+  color: #718096 !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+.category-report-stats strong {
+  min-width: 76px !important;
+  text-align: right !important;
+
+  color: #172033 !important;
+  font-size: 13px !important;
+  font-weight: 750 !important;
+}
+
+
+/* ---------- CATEGORY BAR ---------- */
+
+.category-report-bar {
+  grid-column: 1 / -1 !important;
+
+  width: 100% !important;
+  height: 7px !important;
+  margin: 0 !important;
+
+  background: #e9eef5 !important;
+  border-radius: 999px !important;
+  overflow: hidden !important;
+}
+
+.category-report-bar-fill {
+  height: 100% !important;
+  min-width: 3px !important;
+
+  background: linear-gradient(
+    90deg,
+    #2563eb,
+    #60a5fa
+  ) !important;
+
+  border-radius: 999px !important;
+
+  transition: width 0.35s ease !important;
+}
+
+
+/* =========================================================
+   RECENT WASTE ACTIVITY
+========================================================= */
+
+.recent-waste-card {
+  margin-top: 22px !important;
+  padding: 24px !important;
+}
+
+.recent-waste-header {
+  margin-bottom: 19px !important;
+}
+
+.recent-waste-header h2 {
+  margin: 0 0 5px !important;
+  color: #172033 !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+}
+
+.recent-waste-header p {
+  margin: 0 !important;
+  color: #718096 !important;
+  font-size: 13px !important;
+}
+
+.recent-waste-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 9px !important;
+}
+
+.recent-waste-row {
+  display: grid !important;
+  grid-template-columns: minmax(220px, 1.8fr) 0.7fr 0.7fr !important;
+  align-items: center !important;
+
+  gap: 20px !important;
+
+  width: 100% !important;
+  min-height: 64px !important;
+  padding: 11px 14px !important;
+  box-sizing: border-box !important;
+
+  background: #fafbfc !important;
+  border: 1px solid #edf0f4 !important;
+  border-radius: 12px !important;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease !important;
+}
+
+.recent-waste-row:hover {
+  background: #ffffff !important;
+  border-color: #dbe3ed !important;
+}
+
+.recent-waste-main {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  min-width: 0 !important;
+}
+
+.recent-waste-icon {
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  border-radius: 10px !important;
+  background: #eff6ff !important;
+
+  font-size: 17px !important;
+}
+
+.recent-waste-main > div {
+  min-width: 0 !important;
+}
+
+.recent-waste-main strong {
+  display: block !important;
+
+  margin: 0 0 3px !important;
+
+  color: #172033 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.recent-waste-main p {
+  margin: 0 !important;
+  color: #718096 !important;
+  font-size: 11px !important;
+}
+
+.recent-waste-category {
+  justify-self: start !important;
+
+  padding: 5px 9px !important;
+
+  background: #eff6ff !important;
+  border-radius: 7px !important;
+
+  color: #2563eb !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+
+.recent-waste-weight {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  gap: 2px !important;
+}
+
+.recent-waste-weight span {
+  color: #94a3b8 !important;
+  font-size: 10px !important;
+}
+
+.recent-waste-weight strong {
+  color: #172033 !important;
+  font-size: 13px !important;
+  font-weight: 750 !important;
+}
+
+.recent-waste-empty {
+  margin: 0 !important;
+  padding: 30px !important;
+  text-align: center !important;
+  color: #718096 !important;
+  font-size: 13px !important;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.reports-empty {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 50px 25px !important;
+  text-align: center !important;
+
+  background: #ffffff !important;
+  border: 1px solid #e6ebf2 !important;
+  border-radius: 18px !important;
+}
+
+.reports-empty span {
+  display: block !important;
+  margin-bottom: 12px !important;
+  font-size: 36px !important;
+}
+
+.reports-empty h2 {
+  margin: 0 0 7px !important;
+  color: #172033 !important;
+  font-size: 19px !important;
+}
+
+.reports-empty p {
+  margin: 0 !important;
+  color: #718096 !important;
+  font-size: 13px !important;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .reports-page {
+    padding: 22px 20px 35px !important;
+  }
+
+  .reports-summary-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .recent-waste-row {
+    grid-template-columns: 1fr auto auto !important;
+  }
+}
+
+
+@media (max-width: 700px) {
+
+  .reports-page {
+    padding: 18px 14px 30px !important;
+  }
+
+  .reports-header h1 {
+    font-size: 25px !important;
+  }
+
+  .category-report-card,
+  .recent-waste-card {
+    padding: 17px !important;
+    border-radius: 14px !important;
+  }
+
+  .category-report-row {
+    grid-template-columns: 1fr !important;
+    gap: 9px !important;
+  }
+
+  .category-report-stats {
+    justify-content: space-between !important;
+    padding-left: 47px !important;
+  }
+
+  .category-report-bar {
+    grid-column: 1 !important;
+  }
+
+  .recent-waste-row {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .recent-waste-category {
+    justify-self: start !important;
+    margin-left: 50px !important;
+  }
+
+  .recent-waste-weight {
+    align-items: flex-start !important;
+    margin-left: 50px !important;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   MEDISORT REPORTS & ANALYTICS — CLEAN UI
+   ========================================================= */
+
+.reports-page {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 32px 36px 60px;
+  box-sizing: border-box;
+}
+
+/* ---------- REPORT HEADER ---------- */
+
+.reports-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.reports-header h1 {
+  margin: 0;
+  font-size: 32px;
+  line-height: 1.15;
+  font-weight: 800;
+  color: #172033;
+  letter-spacing: -0.5px;
+}
+
+.reports-header p {
+  margin: 8px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* ---------- REPORT SUMMARY ---------- */
+
+.reports-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.report-summary-card {
+  min-height: 120px;
+  padding: 22px;
+  border: 1px solid #e5eaf0;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(31, 41, 55, 0.06);
+
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  box-sizing: border-box;
+}
+
+.report-summary-icon {
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+  font-size: 23px;
+  background: #eef6ff;
+}
+
+.report-summary-card:nth-child(2) .report-summary-icon {
+  background: #ecfdf5;
+}
+
+.report-summary-card:nth-child(3) .report-summary-icon {
+  background: #fff7ed;
+}
+
+.report-summary-card p {
+  margin: 0 0 5px;
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.report-summary-card strong {
+  display: block;
+  color: #172033;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   MAIN REPORT GRID
+   ========================================================= */
+
+.reports-content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(340px, 0.65fr);
+  gap: 22px;
+  align-items: start;
+}
+
+/* ---------- COMMON REPORT CARD ---------- */
+
+.report-card {
+  background: #ffffff;
+  border: 1px solid #e5eaf0;
+  border-radius: 20px;
+  box-shadow: 0 8px 26px rgba(31, 41, 55, 0.06);
+  overflow: hidden;
+}
+
+.report-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+
+  padding: 24px 26px 18px;
+  border-bottom: 1px solid #eef1f5;
+}
+
+.report-card-header h2 {
+  margin: 0;
+  color: #172033;
+  font-size: 18px;
+  font-weight: 750;
+}
+
+.report-card-header p {
+  margin: 6px 0 0;
+  color: #7b8494;
+  font-size: 13px;
+}
+
+/* =========================================================
+   WASTE CATEGORY DISTRIBUTION
+   ========================================================= */
+
+.waste-category-card {
+  min-width: 0;
+}
+
+.waste-category-list {
+  padding: 8px 26px 26px;
+}
+
+.waste-category-item {
+  padding: 18px 0;
+  border-bottom: 1px solid #eef1f5;
+}
+
+.waste-category-item:last-child {
+  border-bottom: none;
+}
+
+.waste-category-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.waste-category-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: #202938;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.waste-category-count {
+  color: #7b8494;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.waste-category-weight {
+  color: #172033;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+/* ---------- REAL BAR ---------- */
+
+.waste-progress-track {
+  width: 100%;
+  height: 10px;
+
+  overflow: hidden;
+  border-radius: 999px;
+  background: #edf1f5;
+}
+
+.waste-progress-bar {
+  height: 100%;
+  min-width: 8px;
+
+  border-radius: 999px;
+
+  transition:
+    width 0.45s ease,
+    transform 0.2s ease;
+}
+
+/* CATEGORY COLORS */
+
+.waste-progress-bar.white {
+  background: #64748b;
+}
+
+.waste-progress-bar.yellow {
+  background: #eab308;
+}
+
+.waste-progress-bar.blue {
+  background: #2563eb;
+}
+
+.waste-progress-bar.red {
+  background: #dc2626;
+}
+
+.waste-progress-bar.green {
+  background: #16a34a;
+}
+
+/* CATEGORY DOTS */
+
+.category-dot.white {
+  background: #64748b;
+}
+
+.category-dot.yellow {
+  background: #eab308;
+}
+
+.category-dot.blue {
+  background: #2563eb;
+}
+
+.category-dot.red {
+  background: #dc2626;
+}
+
+.category-dot.green {
+  background: #16a34a;
+}
+
+/* =========================================================
+   RECENT WASTE ACTIVITY
+   ========================================================= */
+
+.recent-waste-card {
+  min-width: 0;
+}
+
+.recent-waste-list {
+  padding: 8px 20px 20px;
+}
+
+.recent-waste-item {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) auto;
+
+  align-items: center;
+  gap: 14px;
+
+  padding: 15px 6px;
+  border-bottom: 1px solid #eef1f5;
+}
+
+.recent-waste-item:last-child {
+  border-bottom: none;
+}
+
+.recent-waste-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+  background: #f0fdf4;
+
+  font-size: 19px;
+}
+
+.recent-waste-info {
+  min-width: 0;
+}
+
+.recent-waste-info strong {
+  display: block;
+
+  color: #202938;
+  font-size: 14px;
+  font-weight: 750;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recent-waste-info span {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #7b8494;
+  font-size: 12px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recent-waste-meta {
+  text-align: right;
+}
+
+.recent-waste-meta strong {
+  display: block;
+  color: #172033;
+  font-size: 13px;
+}
+
+.recent-waste-meta span {
+  display: inline-block;
+
+  margin-top: 5px;
+  padding: 4px 8px;
+
+  border-radius: 999px;
+
+  background: #eff6ff;
+  color: #2563eb;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   HOSPITAL REPORTING
+   ========================================================= */
+
+.hospitals-report-card {
+  margin-top: 22px;
+  padding: 24px 26px;
+
+  background: linear-gradient(
+    135deg,
+    #f8fbff 0%,
+    #ffffff 100%
+  );
+
+  border: 1px solid #e5eaf0;
+  border-radius: 20px;
+
+  box-shadow: 0 8px 26px rgba(31, 41, 55, 0.05);
+}
+
+.hospitals-report-content {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.hospitals-report-icon {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+  background: #eef6ff;
+
+  font-size: 22px;
+}
+
+.hospitals-report-content p {
+  margin: 0 0 4px;
+
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.hospitals-report-content strong {
+  color: #172033;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   MEDISORT REPORTS PAGE
+========================================================= */
+
+.reports-page {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 30px 34px 50px;
+  box-sizing: border-box;
+}
+
+
+/* ================= HEADER ================= */
+
+.reports-header {
+  margin-bottom: 26px;
+}
+
+.reports-header .admin-eyebrow {
+  margin: 0 0 8px;
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.reports-header h1 {
+  margin: 0;
+  color: #172033;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.reports-subtitle {
+  margin: 8px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+
+/* ================= SUMMARY ================= */
+
+.reports-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.reports-summary-card {
+  min-height: 112px;
+
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  padding: 20px;
+
+  background: #ffffff;
+  border: 1px solid #e6ebf2;
+  border-radius: 16px;
+
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
+
+  box-sizing: border-box;
+}
+
+.reports-summary-icon {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: #eff6ff;
+
+  font-size: 21px;
+}
+
+.reports-summary-card p {
+  margin: 0 0 5px;
+
+  color: #718096;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.reports-summary-card strong {
+  color: #172033;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+
+/* ================= MAIN GRID ================= */
+
+.reports-main-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.45fr)
+    minmax(340px, 0.85fr);
+
+  gap: 22px;
+
+  align-items: start;
+}
+
+
+/* ================= PANELS ================= */
+
+.reports-panel {
+  min-width: 0;
+
+  background: #ffffff;
+
+  border: 1px solid #e6ebf2;
+  border-radius: 18px;
+
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
+
+  overflow: hidden;
+}
+
+.reports-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 21px 22px;
+
+  border-bottom: 1px solid #edf1f5;
+}
+
+.reports-panel-header h2 {
+  margin: 0;
+
+  color: #172033;
+
+  font-size: 17px;
+  font-weight: 750;
+}
+
+.reports-panel-header p {
+  margin: 5px 0 0;
+
+  color: #7b8494;
+
+  font-size: 12px;
+}
+
+.reports-live-badge {
+  padding: 5px 9px;
+
+  border-radius: 999px;
+
+  background: #ecfdf5;
+
+  color: #15803d;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.reports-count-badge {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: #eff6ff;
+  color: #2563eb;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+
+/* ================= CATEGORY ================= */
+
+.category-report-list {
+  padding: 5px 22px 20px;
+}
+
+.category-report-item {
+  padding: 17px 0;
+
+  border-bottom: 1px solid #edf1f5;
+}
+
+.category-report-item:last-child {
+  border-bottom: none;
+}
+
+.category-report-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 9px;
+}
+
+.category-report-name {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.category-report-name strong {
+  color: #202938;
+  font-size: 13px;
+}
+
+.category-color-dot {
+  width: 10px;
+  height: 10px;
+
+  border-radius: 50%;
+}
+
+.category-color-dot.white {
+  background: #64748b;
+}
+
+.category-color-dot.yellow {
+  background: #eab308;
+}
+
+.category-color-dot.blue {
+  background: #2563eb;
+}
+
+.category-color-dot.red {
+  background: #dc2626;
+}
+
+.category-report-values {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  white-space: nowrap;
+}
+
+.category-report-values span {
+  color: #7b8494;
+  font-size: 11px;
+}
+
+.category-report-values strong {
+  min-width: 74px;
+
+  text-align: right;
+
+  color: #172033;
+  font-size: 12px;
+}
+
+.category-progress {
+  width: 100%;
+  height: 8px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background: #edf1f5;
+}
+
+.category-progress-fill {
+  height: 100%;
+  min-width: 4px;
+
+  border-radius: 999px;
+
+  transition: width 0.4s ease;
+}
+
+.category-progress-fill.white {
+  background: #64748b;
+}
+
+.category-progress-fill.yellow {
+  background: #eab308;
+}
+
+.category-progress-fill.blue {
+  background: #2563eb;
+}
+
+.category-progress-fill.red {
+  background: #dc2626;
+}
+
+.category-percentage {
+  margin-top: 6px;
+
+  color: #9aa3b2;
+
+  font-size: 10px;
+}
+
+
+/* ================= RECENT ACTIVITY ================= */
+
+.recent-waste-list {
+  padding: 4px 20px 15px;
+}
+
+.recent-waste-item {
+  display: grid;
+
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 14px 2px;
+
+  border-bottom: 1px solid #edf1f5;
+}
+
+.recent-waste-item:last-child {
+  border-bottom: none;
+}
+
+.recent-waste-icon {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #f0fdf4;
+
+  font-size: 17px;
+}
+
+.recent-waste-info {
+  min-width: 0;
+}
+
+.recent-waste-info strong {
+  display: block;
+
+  color: #202938;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recent-waste-info span {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #7b8494;
+
+  font-size: 11px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recent-waste-right {
+  text-align: right;
+}
+
+.recent-waste-right strong {
+  display: block;
+
+  color: #172033;
+
+  font-size: 12px;
+}
+
+.recent-category {
+  display: inline-block;
+
+  margin-top: 5px;
+
+  padding: 4px 7px;
+
+  border-radius: 6px;
+
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.recent-category.white {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.recent-category.yellow {
+  background: #fef9c3;
+  color: #a16207;
+}
+
+.recent-category.blue {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.recent-category.red {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+
+/* ================= HOSPITAL SUMMARY ================= */
+
+.reports-hospital-summary {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  margin-top: 22px;
+
+  padding: 20px 22px;
+
+  background: #ffffff;
+
+  border: 1px solid #e6ebf2;
+  border-radius: 16px;
+
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
+}
+
+.hospital-summary-icon {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #eff6ff;
+
+  font-size: 20px;
+}
+
+.reports-hospital-summary p {
+  margin: 0 0 3px;
+
+  color: #718096;
+
+  font-size: 12px;
+}
+
+.reports-hospital-summary strong {
+  color: #172033;
+
+  font-size: 23px;
+
+  font-weight: 800;
+}
+
+.hospital-summary-status {
+  margin-left: auto;
+
+  padding: 6px 10px;
+
+  border-radius: 999px;
+
+  background: #ecfdf5;
+
+  color: #15803d;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+
+/* ================= EMPTY ================= */
+
+.reports-empty {
+  padding: 35px 20px;
+
+  text-align: center;
+
+  color: #7b8494;
+
+  font-size: 13px;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 950px) {
+
+  .reports-main-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 700px) {
+
+  .reports-page {
+    padding: 22px 16px 40px;
+  }
+
+  .reports-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .category-report-top {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .category-report-values {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .recent-waste-item {
+    grid-template-columns: 40px minmax(0, 1fr);
+  }
+
+  .recent-waste-right {
+    grid-column: 2;
+    text-align: left;
+  }
+
+}
