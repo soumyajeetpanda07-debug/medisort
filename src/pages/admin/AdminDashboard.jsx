@@ -1,4 +1,3 @@
-
 import "./AdminDashboard.css";
 import { useEffect, useState } from "react";
 
@@ -27,11 +26,11 @@ function AdminDashboard() {
   // =========================================================
 
   const [adminPage, setAdminPage] = useState("dashboard");
-const [collectorSearch, setCollectorSearch] = useState("");
-const [showCollectorForm, setShowCollectorForm] = useState(false);
-const [collectors, setCollectors] = useState([]);
-const [wasteRecords, setWasteRecords] = useState([]);
-const [wasteSearch, setWasteSearch] = useState("");
+  const [collectorSearch, setCollectorSearch] = useState("");
+  const [showCollectorForm, setShowCollectorForm] = useState(false);
+  const [collectors, setCollectors] = useState([]);
+  const [wasteRecords, setWasteRecords] = useState([]);
+  const [wasteSearch, setWasteSearch] = useState("");
 
   // =========================================================
   // HOSPITAL DATA
@@ -68,7 +67,8 @@ const [wasteSearch, setWasteSearch] = useState("");
   }, []);
 
   // =========================================================
-  // WASTE COLLECTED
+  // WASTE BATCHES — WASTE COLLECTED + ACTIVE COLLECTIONS
+  // FIX: Merged two duplicate wasteBatches listeners into one
   // =========================================================
 
   useEffect(() => {
@@ -76,6 +76,7 @@ const [wasteSearch, setWasteSearch] = useState("");
       collection(db, "wasteBatches"),
       (snapshot) => {
         let total = 0;
+        let activeCount = 0;
 
         snapshot.forEach((document) => {
           const waste = document.data();
@@ -83,40 +84,17 @@ const [wasteSearch, setWasteSearch] = useState("");
           if (waste.status === "Collected") {
             total += Number(waste.weight) || 0;
           }
-        });
-
-        setWasteCollected(total);
-      },
-      (error) => {
-        console.error("Error loading collected waste:", error);
-      }
-    );
-
-    return () => unsubscribe();
-  }, []);
-
-  // =========================================================
-  // ACTIVE COLLECTIONS
-  // =========================================================
-
-  useEffect(() => {
-    const unsubscribe = onSnapshot(
-      collection(db, "wasteBatches"),
-      (snapshot) => {
-        let activeCount = 0;
-
-        snapshot.forEach((document) => {
-          const waste = document.data();
 
           if (waste.status === "In Transit") {
             activeCount++;
           }
         });
 
+        setWasteCollected(total);
         setActiveCollections(activeCount);
       },
       (error) => {
-        console.error("Error loading active collections:", error);
+        console.error("Error loading waste batches:", error);
       }
     );
 
@@ -146,135 +124,93 @@ const [wasteSearch, setWasteSearch] = useState("");
     return () => unsubscribe();
   }, []);
 
-// =========================================================
-// COLLECTORS - LIVE FIREBASE LISTENER
-// =========================================================
+  // =========================================================
+  // COLLECTORS - LIVE FIREBASE LISTENER
+  // =========================================================
 
-useEffect(() => {
-  const unsubscribe = onSnapshot(
-    collection(db, "collectors"),
-    (snapshot) => {
-      const collectorData = snapshot.docs.map((document) => ({
-        id: document.id,
-        ...document.data(),
-      }));
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      collection(db, "collectors"),
+      (snapshot) => {
+        const collectorData = snapshot.docs.map((document) => ({
+          id: document.id,
+          ...document.data(),
+        }));
 
-      setCollectors(collectorData);
-    },
-    (error) => {
-      console.error("Error loading collectors:", error);
+        setCollectors(collectorData);
+      },
+      (error) => {
+        console.error("Error loading collectors:", error);
+      }
+    );
+
+    return () => unsubscribe();
+  }, []);
+
+  // =========================================================
+  // WASTE RECORDS - LIVE FIREBASE LISTENER
+  // =========================================================
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      collection(db, "wasteRecords"),
+      (snapshot) => {
+        const wasteData = snapshot.docs.map((document) => ({
+          id: document.id,
+          ...document.data(),
+        }));
+
+        setWasteRecords(wasteData);
+      },
+      (error) => {
+        console.error("Error loading waste records:", error);
+      }
+    );
+
+    return () => unsubscribe();
+  }, []);
+
+  // =========================================================
+  // ADD COLLECTOR
+  // =========================================================
+
+  const handleAddCollector = async (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+
+    const collectorName = form.collectorName.value.trim();
+    const contactNumber = form.contactNumber.value.trim();
+    const assignedArea = form.assignedArea.value.trim();
+    const status = form.status.value;
+
+    if (!collectorName || !contactNumber || !assignedArea) {
+      alert("Please fill in all collector details.");
+      return;
     }
-  );
 
-  return () => unsubscribe();
-}, []);
+    try {
+      await addDoc(collection(db, "collectors"), {
+        name: collectorName,
+        contact: contactNumber,
+        assignedArea: assignedArea,
+        status: status,
+        createdAt: serverTimestamp(),
+      });
 
+      alert("✅ Collector added successfully!");
 
-
-
-
-
-// =========================================================
-// COLLECTORS - LIVE FIREBASE LISTENER
-// =========================================================
-
-useEffect(() => {
-  const unsubscribe = onSnapshot(
-    collection(db, "collectors"),
-    (snapshot) => {
-      const collectorData = snapshot.docs.map((document) => ({
-        id: document.id,
-        ...document.data(),
-      }));
-
-      setCollectors(collectorData);
-    },
-    (error) => {
-      console.error("Error loading collectors:", error);
+      form.reset();
+      setShowCollectorForm(false);
+    } catch (error) {
+      console.error("Error adding collector:", error);
+      alert("❌ Failed to add collector.");
     }
-  );
-
-  return () => unsubscribe();
-}, []);
-
-// =========================================================
-// WASTE RECORDS - LIVE FIREBASE LISTENER
-// =========================================================
-
-useEffect(() => {
-  const unsubscribe = onSnapshot(
-    collection(db, "wasteRecords"),
-    (snapshot) => {
-      const wasteData = snapshot.docs.map((document) => ({
-        id: document.id,
-        ...document.data(),
-      }));
-
-      setWasteRecords(wasteData);
-    },
-    (error) => {
-      console.error("Error loading waste records:", error);
-    }
-  );
-
-  return () => unsubscribe();
-}, []);
-
-
-
-
-
+  };
 
   // =========================================================
   // ADD HOSPITAL
   // =========================================================
-
-const handleAddCollector = async (e) => {
-  e.preventDefault();
-
-  const form = e.target;
-
-  const collectorName = form.collectorName.value.trim();
-  const contactNumber = form.contactNumber.value.trim();
-  const assignedArea = form.assignedArea.value.trim();
-  const status = form.status.value;
-
-  if (!collectorName || !contactNumber || !assignedArea) {
-    alert("Please fill in all collector details.");
-    return;
-  }
-
-  try {
-    await addDoc(collection(db, "collectors"), {
-      name: collectorName,
-      contact: contactNumber,
-      assignedArea: assignedArea,
-      status: status,
-      createdAt: serverTimestamp(),
-    });
-
-    alert("✅ Collector added successfully!");
-
-    form.reset();
-    setShowCollectorForm(false);
-
-  } catch (error) {
-    console.error("Error adding collector:", error);
-    alert("❌ Failed to add collector.");
-  }
-};
-
-
-
-
-
-
-
-
-
-
-
-
 
   const handleAddHospital = async (e) => {
     e.preventDefault();
@@ -310,30 +246,29 @@ const handleAddCollector = async (e) => {
   };
 
   // =========================================================
-  // DELETE HOSPITAL
+  // DELETE COLLECTOR
   // =========================================================
 
-const handleDeleteCollector = async (collectorId) => {
-  const confirmDelete = window.confirm(
-    "Are you sure you want to delete this collector?"
-  );
+  const handleDeleteCollector = async (collectorId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this collector?"
+    );
 
-  if (!confirmDelete) return;
+    if (!confirmDelete) return;
 
-  try {
-    await deleteDoc(doc(db, "collectors", collectorId));
+    try {
+      await deleteDoc(doc(db, "collectors", collectorId));
 
-    alert("✅ Collector deleted successfully!");
-  } catch (error) {
-    console.error("Error deleting collector:", error);
-    alert("❌ Failed to delete collector.");
-  }
-};
+      alert("✅ Collector deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting collector:", error);
+      alert("❌ Failed to delete collector.");
+    }
+  };
 
-
-
-
-
+  // =========================================================
+  // DELETE HOSPITAL
+  // =========================================================
 
   const handleDeleteHospital = async (hospitalId) => {
     const confirmDelete = window.confirm(
@@ -355,27 +290,27 @@ const handleDeleteCollector = async (collectorId) => {
   };
 
   // =========================================================
-  // FILTER HOSPITALS
+  // FILTERED LISTS
   // =========================================================
-const filteredHospitals = hospitals.filter((hospital) =>
-  hospital.name?.toLowerCase().includes(hospitalSearch.toLowerCase())
-);
 
-const filteredCollectors = collectors.filter((collector) =>
-  collector.name
-    ?.toLowerCase()
-    .includes(collectorSearch.toLowerCase())
-);
-
- const filteredWasteRecords = wasteRecords.filter((record) => {
-  const search = wasteSearch.toLowerCase();
-
-  return (
-    record.wasteType?.toLowerCase().includes(search) ||
-    record.category?.toLowerCase().includes(search) ||
-    record.hospital?.toLowerCase().includes(search)
+  const filteredHospitals = hospitals.filter((hospital) =>
+    hospital.name?.toLowerCase().includes(hospitalSearch.toLowerCase())
   );
-});
+
+  const filteredCollectors = collectors.filter((collector) =>
+    collector.name?.toLowerCase().includes(collectorSearch.toLowerCase())
+  );
+
+  const filteredWasteRecords = wasteRecords.filter((record) => {
+    const search = wasteSearch.toLowerCase();
+
+    return (
+      record.wasteType?.toLowerCase().includes(search) ||
+      record.category?.toLowerCase().includes(search) ||
+      record.hospital?.toLowerCase().includes(search)
+    );
+  });
+
   // =========================================================
   // DASHBOARD
   // =========================================================
@@ -431,30 +366,28 @@ const filteredCollectors = collectors.filter((collector) =>
           </button>
 
           {/* COLLECTORS */}
-<button
-  className={`admin-nav-item ${
-    adminPage === "collectors" ? "active" : ""
-  }`}
-  onClick={() => setAdminPage("collectors")}
->
-  🚚
-  <span>Collectors</span>
-</button>
-         
-<button
-  className={`admin-nav-item ${
-    adminPage === "wasteRecords" ? "active" : ""
-  }`}
-  onClick={() => setAdminPage("wasteRecords")}
->
-  ♻️
-  <span>Waste Records</span>
-</button>
 
+          <button
+            className={`admin-nav-item ${
+              adminPage === "collectors" ? "active" : ""
+            }`}
+            onClick={() => setAdminPage("collectors")}
+          >
+            🚚
+            <span>Collectors</span>
+          </button>
 
+          {/* WASTE RECORDS */}
 
-
-
+          <button
+            className={`admin-nav-item ${
+              adminPage === "wasteRecords" ? "active" : ""
+            }`}
+            onClick={() => setAdminPage("wasteRecords")}
+          >
+            ♻️
+            <span>Waste Records</span>
+          </button>
 
           {/* REPORTS */}
 
@@ -548,12 +481,13 @@ const filteredCollectors = collectors.filter((collector) =>
                     Hospitals connected to MediSort
                   </p>
                 </div>
-<span>
-  {filteredHospitals.length}{" "}
-  {filteredHospitals.length === 1 ? "Hospital" : "Hospitals"}
-</span>
-               
-              </div>np
+
+                <span>
+                  {filteredHospitals.length}{" "}
+                  {filteredHospitals.length === 1 ? "Hospital" : "Hospitals"}
+                </span>
+
+              </div>
 
 
               {/* EMPTY STATE */}
@@ -566,13 +500,9 @@ const filteredCollectors = collectors.filter((collector) =>
                     🏥
                   </div>
 
-                  <h3>
-                    No hospitals found
-                  </h3>
+                  <h3>No hospitals found</h3>
 
-                  <p>
-                    Add a hospital to get started.
-                  </p>
+                  <p>Add a hospital to get started.</p>
 
                 </div>
 
@@ -583,27 +513,11 @@ const filteredCollectors = collectors.filter((collector) =>
                   {/* TABLE HEADER */}
 
                   <div className="hospital-table-row hospital-table-heading">
-
-                    <span>
-                      Hospital Name
-                    </span>
-
-                    <span>
-                      Location
-                    </span>
-
-                    <span>
-                      Contact
-                    </span>
-
-                    <span>
-                      Status
-                    </span>
-
-                    <span>
-                      Action
-                    </span>
-
+                    <span>Hospital Name</span>
+                    <span>Location</span>
+                    <span>Contact</span>
+                    <span>Status</span>
+                    <span>Action</span>
                   </div>
 
 
@@ -617,21 +531,14 @@ const filteredCollectors = collectors.filter((collector) =>
                     >
 
                       <span>
-                        <strong>
-                          {hospital.name}
-                        </strong>
+                        <strong>{hospital.name}</strong>
                       </span>
 
-                      <span>
-                        {hospital.location}
-                      </span>
+                      <span>{hospital.location}</span>
+
+                      <span>{hospital.contact || "—"}</span>
 
                       <span>
-                        {hospital.contact || "—"}
-                      </span>
-
-                      <span>
-
                         <span
                           className={`hospital-status ${
                             hospital.status === "Inactive"
@@ -641,22 +548,17 @@ const filteredCollectors = collectors.filter((collector) =>
                         >
                           {hospital.status || "Active"}
                         </span>
-
                       </span>
 
                       <span>
-
                         <button
                           className="delete-hospital-btn"
                           onClick={() =>
-                            handleDeleteHospital(
-                              hospital.id
-                            )
+                            handleDeleteHospital(hospital.id)
                           }
                         >
                           Delete
                         </button>
-
                       </span>
 
                     </div>
@@ -685,21 +587,16 @@ const filteredCollectors = collectors.filter((collector) =>
                   <div className="hospital-modal-header">
 
                     <div>
-                      <h2>
-                        Add Hospital
-                      </h2>
+                      <h2>Add Hospital</h2>
 
                       <p>
-                        Register a new hospital
-                        in MediSort.
+                        Register a new hospital in MediSort.
                       </p>
                     </div>
 
                     <button
                       className="hospital-modal-close"
-                      onClick={() =>
-                        setShowHospitalForm(false)
-                      }
+                      onClick={() => setShowHospitalForm(false)}
                     >
                       ×
                     </button>
@@ -718,9 +615,7 @@ const filteredCollectors = collectors.filter((collector) =>
 
                     <div className="hospital-form-group">
 
-                      <label>
-                        Hospital Name
-                      </label>
+                      <label>Hospital Name</label>
 
                       <input
                         type="text"
@@ -738,18 +633,14 @@ const filteredCollectors = collectors.filter((collector) =>
 
                     <div className="hospital-form-group">
 
-                      <label>
-                        Location
-                      </label>
+                      <label>Location</label>
 
                       <input
                         type="text"
                         placeholder="Enter hospital location"
                         value={hospitalLocation}
                         onChange={(e) =>
-                          setHospitalLocation(
-                            e.target.value
-                          )
+                          setHospitalLocation(e.target.value)
                         }
                       />
 
@@ -760,18 +651,14 @@ const filteredCollectors = collectors.filter((collector) =>
 
                     <div className="hospital-form-group">
 
-                      <label>
-                        Contact
-                      </label>
+                      <label>Contact</label>
 
                       <input
                         type="text"
                         placeholder="Enter contact number"
                         value={hospitalContact}
                         onChange={(e) =>
-                          setHospitalContact(
-                            e.target.value
-                          )
+                          setHospitalContact(e.target.value)
                         }
                       />
 
@@ -782,27 +669,16 @@ const filteredCollectors = collectors.filter((collector) =>
 
                     <div className="hospital-form-group">
 
-                      <label>
-                        Status
-                      </label>
+                      <label>Status</label>
 
                       <select
                         value={hospitalStatus}
                         onChange={(e) =>
-                          setHospitalStatus(
-                            e.target.value
-                          )
+                          setHospitalStatus(e.target.value)
                         }
                       >
-
-                        <option value="Active">
-                          Active
-                        </option>
-
-                        <option value="Inactive">
-                          Inactive
-                        </option>
-
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
                       </select>
 
                     </div>
@@ -815,9 +691,7 @@ const filteredCollectors = collectors.filter((collector) =>
                       <button
                         type="button"
                         className="hospital-cancel-btn"
-                        onClick={() =>
-                          setShowHospitalForm(false)
-                        }
+                        onClick={() => setShowHospitalForm(false)}
                       >
                         Cancel
                       </button>
@@ -841,15 +715,12 @@ const filteredCollectors = collectors.filter((collector) =>
 
           </div>
 
+        ) : adminPage === "collectors" ? (
 
-
-
-
-
-
-          ) : adminPage === "collectors" ? (
           <div className="collector-management-page">
+
             <header className="collector-page-header">
+
               <div>
                 <p className="admin-eyebrow">
                   MediSort Administration
@@ -862,120 +733,98 @@ const filteredCollectors = collectors.filter((collector) =>
                 </p>
               </div>
 
-            <button
-  className="add-collector-btn"
-  onClick={() => setShowCollectorForm(true)}
->
-  + Add Collector
-</button>
-
-
-
+              <button
+                className="add-collector-btn"
+                onClick={() => setShowCollectorForm(true)}
+              >
+                + Add Collector
+              </button>
 
             </header>
 
 
+            {showCollectorForm && (
+              <div className="collector-form-card">
 
-{showCollectorForm && (
-  <div className="collector-form-card">
+                <div className="collector-form-header">
+                  <div>
+                    <h2>Add Collector</h2>
+                    <p>Register a new medical waste collector.</p>
+                  </div>
 
-    <div className="collector-form-header">
-      <div>
-        <h2>Add Collector</h2>
-        <p>Register a new medical waste collector.</p>
-      </div>
+                  <button
+                    type="button"
+                    className="close-collector-form"
+                    onClick={() => setShowCollectorForm(false)}
+                  >
+                    ✕
+                  </button>
+                </div>
 
-      <button
-        type="button"
-        className="close-collector-form"
-        onClick={() => setShowCollectorForm(false)}
-      >
-        ✕
-      </button>
-    </div>
+                <form onSubmit={handleAddCollector}>
 
-    <form onSubmit={handleAddCollector}>
+                  <div className="collector-form-grid">
 
+                    <div className="collector-form-group">
+                      <label>Collector Name</label>
+                      <input
+                        type="text"
+                        name="collectorName"
+                        placeholder="Enter collector name"
+                      />
+                    </div>
 
+                    <div className="collector-form-group">
+                      <label>Contact Number</label>
+                      <input
+                        type="text"
+                        name="contactNumber"
+                        placeholder="Enter contact number"
+                      />
+                    </div>
 
-      <div className="collector-form-grid">
+                    <div className="collector-form-group">
+                      <label>Assigned Area</label>
+                      <input
+                        type="text"
+                        name="assignedArea"
+                        placeholder="Enter assigned area"
+                      />
+                    </div>
 
-        <div className="collector-form-group">
-          <label>Collector Name</label>
-          <input
-            type="text"
-            name="collectorName"
-            placeholder="Enter collector name"
-          />
-        </div>
+                    <div className="collector-form-group">
+                      <label>Status</label>
+                      <select name="status" defaultValue="Active">
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                      </select>
+                    </div>
 
-        <div className="collector-form-group">
-          <label>Contact Number</label>
-        
-<input
-  type="text"
-  name="contactNumber"
-  placeholder="Enter contact number"
-/>
+                  </div>
 
+                  <div className="collector-form-actions">
 
+                    <button
+                      type="button"
+                      className="cancel-collector-btn"
+                      onClick={() => setShowCollectorForm(false)}
+                    >
+                      Cancel
+                    </button>
 
-        </div>
+                    <button
+                      type="submit"
+                      className="save-collector-btn"
+                    >
+                      Save Collector
+                    </button>
 
-        <div className="collector-form-group">
-          <label>Assigned Area</label>
-       
-<input
-  type="text"
-  name="assignedArea"
-  placeholder="Enter assigned area"
-/>
+                  </div>
 
+                </form>
 
-
-        </div>
-
-        <div className="collector-form-group">
-          <label>Status</label>
-         <select name="status" defaultValue="Active">
-            <option value="Active">Active</option>
-            <option value="Inactive">Inactive</option>
-          </select>
-        </div>
-
-      </div>
-
-      <div className="collector-form-actions">
-
-        <button
-          type="button"
-          className="cancel-collector-btn"
-          onClick={() => setShowCollectorForm(false)}
-        >
-          Cancel
-        </button>
-
-        <button
-          type="submit"
-          className="save-collector-btn"
-        >
-          Save Collector
-        </button>
-
-      </div>
-
-    </form>
-
-  </div>
-)}s
-
-
-
-
-
-
-
-
+              </div>
+            )}
 
 
             <div className="collector-search-box">
@@ -990,255 +839,227 @@ const filteredCollectors = collectors.filter((collector) =>
             </div>
 
             <div className="collector-list-card">
+
               <div className="collector-list-header">
                 <div>
                   <h2>Registered Collectors</h2>
-                  <p>
-                    Waste collectors connected to MediSort
-                  </p>
+                  <p>Waste collectors connected to MediSort</p>
                 </div>
 
                 <span>
-  {filteredCollectors.length}{" "}
-  {filteredCollectors.length === 1
-    ? "Collector"
-    : "Collectors"}
-</span>
-
-
-
-
+                  {filteredCollectors.length}{" "}
+                  {filteredCollectors.length === 1
+                    ? "Collector"
+                    : "Collectors"}
+                </span>
               </div>
 
               {filteredCollectors.length === 0 ? (
-  <div className="empty-collectors">
+                <div className="empty-collectors">
 
-    <div className="empty-collector-icon">
-      🚚
-    </div>
+                  <div className="empty-collector-icon">🚚</div>
 
-    <h3>No collectors found</h3>
+                  <h3>No collectors found</h3>
 
-    <p>
-      Add a collector to start managing collection staff.
-    </p>
+                  <p>
+                    Add a collector to start managing collection staff.
+                  </p>
 
-  </div>
-) : (
-  <div className="collector-table">
+                </div>
+              ) : (
+                <div className="collector-table">
 
-    {filteredCollectors.map((collector) => (
-    <div
-      className="collector-row"
-      key={collector.id}
-    >
+                  {filteredCollectors.map((collector) => (
+                    <div
+                      className="collector-row"
+                      key={collector.id}
+                    >
 
-      <div className="collector-info">
+                      <div className="collector-info">
 
-        <div className="collector-avatar">
-          {collector.name?.charAt(0).toUpperCase()}
-        </div>
+                        <div className="collector-avatar">
+                          {collector.name?.charAt(0).toUpperCase()}
+                        </div>
 
-        <div>
-          <h3>{collector.name}</h3>
+                        <div>
+                          <h3>{collector.name}</h3>
+                          <p>{collector.contact}</p>
+                        </div>
 
-          <p>
-            {collector.contact}
-          </p>
-        </div>
+                      </div>
 
-      </div>
+                      <div className="collector-area">
+                        <span>Assigned Area</span>
+                        <strong>{collector.assignedArea}</strong>
+                      </div>
 
-      <div className="collector-area">
-        <span>Assigned Area</span>
+                      <div className="collector-status">
+                        <span
+                          className={
+                            collector.status === "Active"
+                              ? "status-active"
+                              : "status-inactive"
+                          }
+                        >
+                          {collector.status}
+                        </span>
+                      </div>
 
-        <strong>
-          {collector.assignedArea}
-        </strong>
-      </div>
+                      <button
+                        type="button"
+                        className="delete-collector-btn"
+                        onClick={() =>
+                          handleDeleteCollector(collector.id)
+                        }
+                      >
+                        Delete
+                      </button>
 
-      <div className="collector-status">
-        <span
-          className={
-            collector.status === "Active"
-              ? "status-active"
-              : "status-inactive"
-          }
-        >
-          {collector.status}
-        </span>
-      </div>
+                    </div>
+                  ))}
 
-      <button
-        type="button"
-        className="delete-collector-btn"
-        onClick={() =>
-          handleDeleteCollector(collector.id)
-        }
-      >
-        Delete
-      </button>
-
-    </div>
-  ))}
-
-  </div>
-)}
-
-
-
-
-
-
-
+                </div>
+              )}
 
             </div>
           </div>
-        ) :  adminPage === "wasteRecords" ? (    
-          <><div className="waste-records-page">
 
-  <header className="waste-records-header">
+        ) : adminPage === "wasteRecords" ? (
 
-    <div>
-      <p className="admin-eyebrow">
-        MediSort Administration
-      </p>
+          <div className="waste-records-page">
 
-      <h1>Waste Records</h1>
+            <header className="waste-records-header">
 
-      <p>
-        Monitor and manage medical waste records.
-      </p>
-    </div>
+              <div>
+                <p className="admin-eyebrow">
+                  MediSort Administration
+                </p>
 
-  </header>
+                <h1>Waste Records</h1>
 
-  <div className="waste-records-search">
+                <p>Monitor and manage medical waste records.</p>
+              </div>
 
-    <input
-      type="text"
-      placeholder="Search waste records..."
-      value={wasteSearch}
-      onChange={(e) =>
-        setWasteSearch(e.target.value)
-      }
-    />
+            </header>
 
-  </div>
+            <div className="waste-records-search">
 
-  <div className="waste-records-card">
+              <input
+                type="text"
+                placeholder="Search waste records..."
+                value={wasteSearch}
+                onChange={(e) =>
+                  setWasteSearch(e.target.value)
+                }
+              />
 
-    <div className="waste-records-card-header">
+            </div>
 
-      <div>
-        <h2>Recorded Waste</h2>
+            <div className="waste-records-card">
 
-        <p>
-          Waste entries recorded by hospitals
-        </p>
-      </div>
+              <div className="waste-records-card-header">
 
-      <span>
-        {wasteRecords.length}{" "}
-        {wasteRecords.length === 1
-          ? "Record"
-          : "Records"}
-      </span>
+                <div>
+                  <h2>Recorded Waste</h2>
+                  <p>Waste entries recorded by hospitals</p>
+                </div>
 
-    </div>
-{filteredWasteRecords.length === 0 ? (
-  <div className="waste-records-empty">
+                {/* FIX: Show filteredWasteRecords.length, not wasteRecords.length */}
+                <span>
+                  {filteredWasteRecords.length}{" "}
+                  {filteredWasteRecords.length === 1
+                    ? "Record"
+                    : "Records"}
+                </span>
 
-    <div className="waste-records-icon">
-      ♻️
-    </div>
+              </div>
 
-    <h3>No waste records found</h3>
+              {filteredWasteRecords.length === 0 ? (
+                <div className="waste-records-empty">
 
-    <p>
-      Recorded medical waste will appear here
-      automatically.
-    </p>
+                  <div className="waste-records-icon">♻️</div>
 
-  </div>
-) : (
-  <div className="waste-records-list">
+                  <h3>No waste records found</h3>
 
-    {filteredWasteRecords.map((record) => (
-      <div
-        className="waste-record-row"
-        key={record.id}
-      >
+                  <p>
+                    Recorded medical waste will appear here automatically.
+                  </p>
 
-        <div className="waste-record-main">
+                </div>
+              ) : (
+                <div className="waste-records-list">
 
-          <div className="waste-record-icon">
-            ♻️
+                  {filteredWasteRecords.map((record) => (
+                    <div
+                      className="waste-record-row"
+                      key={record.id}
+                    >
+
+                      <div className="waste-record-main">
+
+                        <div className="waste-record-icon">♻️</div>
+
+                        <div>
+                          <h3>
+                            {record.wasteType || "Unknown Waste"}
+                          </h3>
+
+                          <p>
+                            {record.hospital || "Unknown Hospital"}
+                          </p>
+                        </div>
+
+                      </div>
+
+                      <div className="waste-record-category">
+                        <span>Category</span>
+                        <strong>{record.category || "N/A"}</strong>
+                      </div>
+
+                      <div className="waste-record-weight">
+                        <span>Weight</span>
+                        <strong>{record.weight || 0} kg</strong>
+                      </div>
+
+                      <div className="waste-record-date">
+                        <span>Recorded</span>
+                        <strong>
+                          {record.createdAt?.toDate
+                            ? record.createdAt.toDate().toLocaleDateString()
+                            : "—"}
+                        </strong>
+                      </div>
+
+                    </div>
+                  ))}
+
+                </div>
+              )}
+
+            </div>
+
           </div>
 
-          <div>
-            <h3>
-              {record.wasteType || "Unknown Waste"}
-            </h3>
+        ) : (
 
-            <p>
-              {record.hospital || "Unknown Hospital"}
-            </p>
-          </div>
+          // =================================================
+          // DASHBOARD PAGE
+          // FIX: Wrapped multiple siblings in <> fragment
+          // =================================================
 
-        </div>
-
-        <div className="waste-record-category">
-          <span>Category</span>
-
-          <strong>
-            {record.category || "N/A"}
-          </strong>
-        </div>
-
-        <div className="waste-record-weight">
-          <span>Weight</span>
-
-          <strong>
-            {record.weight || 0} kg
-          </strong>
-        </div>
-
-        <div className="waste-record-date">
-  <span>Recorded</span>
-
-  <strong>
-    {record.createdAt?.toDate
-      ? record.createdAt.toDate().toLocaleDateString()
-      : "—"}
-  </strong>
-</div>
-
-      </div>
-    ))}
-
-  </div>
-)}
-   
-
-  </div>
-
-</div>
-
+          <>
             <header className="admin-header">
+
               <div>
 
                 <p className="admin-eyebrow">
                   MediSort Administration
                 </p>
 
-                <h1>
-                  Admin Dashboard
-                </h1>
+                <h1>Admin Dashboard</h1>
 
                 <p className="admin-subtitle">
-                  Monitor medical waste operations
-                  across the system.
+                  Monitor medical waste operations across the system.
                 </p>
 
               </div>
@@ -1246,18 +1067,11 @@ const filteredCollectors = collectors.filter((collector) =>
 
               <div className="admin-user">
 
-                <div className="admin-user-avatar">
-                  A
-                </div>
+                <div className="admin-user-avatar">A</div>
 
                 <div>
-                  <strong>
-                    System Admin
-                  </strong>
-
-                  <span>
-                    Administrator
-                  </span>
+                  <strong>System Admin</strong>
+                  <span>Administrator</span>
                 </div>
 
               </div>
@@ -1276,24 +1090,12 @@ const filteredCollectors = collectors.filter((collector) =>
 
               <div className="admin-stat-card">
 
-                <div className="admin-stat-icon blue">
-                  🏥
-                </div>
+                <div className="admin-stat-icon blue">🏥</div>
 
                 <div>
-
-                  <span>
-                    Active Collections
-                  </span>
-
-                  <h2>
-                    {activeCollections}
-                  </h2>
-
-                  <small>
-                    Waste batches in transit
-                  </small>
-
+                  <span>Active Collections</span>
+                  <h2>{activeCollections}</h2>
+                  <small>Waste batches in transit</small>
                 </div>
 
               </div>
@@ -1303,29 +1105,16 @@ const filteredCollectors = collectors.filter((collector) =>
 
               <div className="admin-stat-card">
 
-                <div className="admin-stat-icon green">
-                  🚚
-                </div>
+                <div className="admin-stat-icon green">🚚</div>
 
                 <div>
-
-                  <span>
-                    Active Collectors
-                  </span>
-
+                  <span>Active Collectors</span>
                   <strong>
                     {collectors.filter(
-  (collector) => collector.status === "Active"
-).length}
-
-
-
+                      (collector) => collector.status === "Active"
+                    ).length}
                   </strong>
-
-                  <small>
-                    Currently registered
-                  </small>
-
+                  <small>Currently registered</small>
                 </div>
 
               </div>
@@ -1335,24 +1124,12 @@ const filteredCollectors = collectors.filter((collector) =>
 
               <div className="admin-stat-card">
 
-                <div className="admin-stat-icon orange">
-                  ♻️
-                </div>
+                <div className="admin-stat-icon orange">♻️</div>
 
                 <div>
-
-                  <span>
-                    Waste Collected
-                  </span>
-
-                  <strong>
-                    {wasteCollected.toFixed(1)} kg
-                  </strong>
-
-                  <small>
-                    Total collected
-                  </small>
-
+                  <span>Waste Collected</span>
+                  <strong>{wasteCollected.toFixed(1)} kg</strong>
+                  <small>Total collected</small>
                 </div>
 
               </div>
@@ -1362,24 +1139,12 @@ const filteredCollectors = collectors.filter((collector) =>
 
               <div className="admin-stat-card">
 
-                <div className="admin-stat-icon purple">
-                  📦
-                </div>
+                <div className="admin-stat-icon purple">📦</div>
 
                 <div>
-
-                  <span>
-                    Pickup Requests
-                  </span>
-
-                  <strong>
-                    {pickupCount}
-                  </strong>
-
-                  <small>
-                    Total requests
-                  </small>
-
+                  <span>Pickup Requests</span>
+                  <strong>{pickupCount}</strong>
+                  <small>Total requests</small>
                 </div>
 
               </div>
@@ -1401,94 +1166,48 @@ const filteredCollectors = collectors.filter((collector) =>
                 <div className="admin-card-header">
 
                   <div>
-
-                    <h2>
-                      System Overview
-                    </h2>
-
-                    <p>
-                      Current MediSort activity
-                    </p>
-
+                    <h2>System Overview</h2>
+                    <p>Current MediSort activity</p>
                   </div>
 
-                  <span className="admin-live">
-                    ● Live
-                  </span>
+                  <span className="admin-live">● Live</span>
 
                 </div>
 
 
                 <div className="overview-list">
 
-
                   <div className="overview-row">
-
                     <div className="overview-label">
-
                       <span className="overview-dot blue-dot"></span>
-
                       Pending Pickups
-
                     </div>
-
-                    <strong>
-                      {pickupCount}
-                    </strong>
-
+                    <strong>{pickupCount}</strong>
                   </div>
 
-
                   <div className="overview-row">
-
                     <div className="overview-label">
-
                       <span className="overview-dot orange-dot"></span>
-
                       In Transit
-
                     </div>
-
-                    <strong>
-                      {activeCollections}
-                    </strong>
-
+                    <strong>{activeCollections}</strong>
                   </div>
 
-
                   <div className="overview-row">
-
                     <div className="overview-label">
-
                       <span className="overview-dot green-dot"></span>
-
                       Collected
-
                     </div>
-
-                    <strong>
-                      {wasteCollected.toFixed(1)} kg
-                    </strong>
-
+                    <strong>{wasteCollected.toFixed(1)} kg</strong>
                   </div>
-
 
                   <div className="overview-row">
-
                     <div className="overview-label">
-
                       <span className="overview-dot red-dot"></span>
-
                       Hospitals
-
                     </div>
-
-                    <strong>
-                      {hospitals.length}
-                    </strong>
-
+                    <strong>{hospitals.length}</strong>
                   </div>
-
 
                 </div>
 
@@ -1500,19 +1219,10 @@ const filteredCollectors = collectors.filter((collector) =>
               <div className="admin-card">
 
                 <div className="admin-card-header">
-
                   <div>
-
-                    <h2>
-                      Quick Actions
-                    </h2>
-
-                    <p>
-                      Common administrative tasks
-                    </p>
-
+                    <h2>Quick Actions</h2>
+                    <p>Common administrative tasks</p>
                   </div>
-
                 </div>
 
 
@@ -1523,73 +1233,39 @@ const filteredCollectors = collectors.filter((collector) =>
 
                   <button
                     className="admin-action"
-                    onClick={() =>
-                      setAdminPage("hospitals")
-                    }
+                    onClick={() => setAdminPage("hospitals")}
                   >
-
-                    <span>
-                      🏥
-                    </span>
-
+                    <span>🏥</span>
                     <div>
-
-                      <strong>
-                        Manage Hospitals
-                      </strong>
-
-                      <small>
-                        View registered hospitals
-                      </small>
-
+                      <strong>Manage Hospitals</strong>
+                      <small>View registered hospitals</small>
                     </div>
-
                   </button>
 
 
                   {/* MANAGE COLLECTORS */}
 
-                  <button className="admin-action">
-
-                    <span>
-                      🚚
-                    </span>
-
+                  {/* FIX: Added missing onClick to navigate to collectors page */}
+                  <button
+                    className="admin-action"
+                    onClick={() => setAdminPage("collectors")}
+                  >
+                    <span>🚚</span>
                     <div>
-
-                      <strong>
-                        Manage Collectors
-                      </strong>
-
-                      <small>
-                        View collector accounts
-                      </small>
-
+                      <strong>Manage Collectors</strong>
+                      <small>View collector accounts</small>
                     </div>
-
                   </button>
 
 
                   {/* REPORT */}
 
                   <button className="admin-action">
-
-                    <span>
-                      📊
-                    </span>
-
+                    <span>📊</span>
                     <div>
-
-                      <strong>
-                        Generate Report
-                      </strong>
-
-                      <small>
-                        View waste analytics
-                      </small>
-
+                      <strong>Generate Report</strong>
+                      <small>View waste analytics</small>
                     </div>
-
                   </button>
 
 
@@ -1609,15 +1285,8 @@ const filteredCollectors = collectors.filter((collector) =>
               <div className="admin-card-header">
 
                 <div>
-
-                  <h2>
-                    Recent Activity
-                  </h2>
-
-                  <p>
-                    Latest system events
-                  </p>
-
+                  <h2>Recent Activity</h2>
+                  <p>Latest system events</p>
                 </div>
 
                 <button className="admin-view-button">
@@ -1633,96 +1302,53 @@ const filteredCollectors = collectors.filter((collector) =>
                 {/* ACTIVITY 1 */}
 
                 <div className="activity-item">
-
-                  <div className="activity-icon blue">
-                    🏥
-                  </div>
-
+                  <div className="activity-icon blue">🏥</div>
                   <div>
-
-                    <strong>
-                      Hospital management
-                    </strong>
-
+                    <strong>Hospital management</strong>
                     <span>
-                      Hospital records are synchronized
-                      with the system.
+                      Hospital records are synchronized with the system.
                     </span>
-
                   </div>
-
-                  <small>
-                    Live
-                  </small>
-
+                  <small>Live</small>
                 </div>
 
 
                 {/* ACTIVITY 2 */}
 
                 <div className="activity-item">
-
-                  <div className="activity-icon green">
-                    🚚
-                  </div>
-
+                  <div className="activity-icon green">🚚</div>
                   <div>
-
-                    <strong>
-                      Waste collection
-                    </strong>
-
+                    <strong>Waste collection</strong>
                     <span>
-                      Collection status is updated
-                      automatically.
+                      Collection status is updated automatically.
                     </span>
-
                   </div>
-
-                  <small>
-                    Live
-                  </small>
-
+                  <small>Live</small>
                 </div>
 
 
                 {/* ACTIVITY 3 */}
 
                 <div className="activity-item">
-
-                  <div className="activity-icon purple">
-                    🔳
-                  </div>
-
+                  <div className="activity-icon purple">🔳</div>
                   <div>
-
-                    <strong>
-                      QR waste tracking
-                    </strong>
-
+                    <strong>QR waste tracking</strong>
                     <span>
-                      Waste batches can be tracked
-                      through QR verification.
+                      Waste batches can be tracked through QR verification.
                     </span>
-
                   </div>
-
-                  <small>
-                    Live
-                  </small>
-
+                  <small>Live</small>
                 </div>
 
 
               </div>
 
-       </section>
+            </section>
+          </>
 
-</>
+        )}
 
-) : null}
-
-</main>
+      </main>
 
     </div>
   );
