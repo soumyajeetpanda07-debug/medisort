@@ -1226,21 +1226,6 @@ const filteredCollectors = collectors.filter((collector) =>
 </div>
 
             <header className="admin-header">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
               <div>
 
                 <p className="admin-eyebrow">
