@@ -301,15 +301,26 @@ function AdminDashboard() {
     collector.name?.toLowerCase().includes(collectorSearch.toLowerCase())
   );
 
-  const filteredWasteRecords = wasteRecords.filter((record) => {
-    const search = wasteSearch.toLowerCase();
+ const filteredWasteRecords = wasteRecords.filter((record) => {
+  const search = wasteSearch.toLowerCase();
 
-    return (
-      record.wasteType?.toLowerCase().includes(search) ||
-      record.category?.toLowerCase().includes(search) ||
-      record.hospital?.toLowerCase().includes(search)
-    );
-  });
+  return (
+    record.wasteType?.toLowerCase().includes(search) ||
+    record.category?.toLowerCase().includes(search) ||
+    record.hospital?.toLowerCase().includes(search)
+  );
+});
+
+const totalWasteWeight = wasteRecords.reduce(
+  (total, record) => total + (Number(record.weight) || 0),
+  0
+);
+
+const wasteCategories = new Set(
+  wasteRecords
+    .map((record) => record.category)
+    .filter(Boolean)
+).size;
 
   // =========================================================
   // DASHBOARD
@@ -391,10 +402,15 @@ function AdminDashboard() {
 
           {/* REPORTS */}
 
-          <button className="admin-nav-item">
-            📈
-            <span>Reports</span>
-          </button>
+          <button
+  className={`admin-nav-item ${
+    adminPage === "reports" ? "active" : ""
+  }`}
+  onClick={() => setAdminPage("reports")}
+>
+  📊
+  <span>Reports</span>
+</button>
 
         </nav>
 
@@ -941,7 +957,33 @@ function AdminDashboard() {
               </div>
 
             </header>
+          <div className="waste-summary-grid">
 
+            <div className="waste-summary-card">
+          <span>📋</span>
+            <div>
+             <p>Total Records</p>
+             <strong>{wasteRecords.length}</strong>
+            </div>
+          </div>
+
+  <div className="waste-summary-card">
+    <span>⚖️</span>
+    <div>
+      <p>Total Weight</p>
+      <strong>{totalWasteWeight.toFixed(1)} kg</strong>
+    </div>
+  </div>
+
+  <div className="waste-summary-card">
+    <span>♻️</span>
+    <div>
+      <p>Categories</p>
+      <strong>{wasteCategories}</strong>
+    </div>
+  </div>
+
+</div>
             <div className="waste-records-search">
 
               <input
@@ -1039,7 +1081,32 @@ function AdminDashboard() {
             </div>
 
           </div>
+        ) : adminPage === "reports" ? (
+  <div className="reports-page">
 
+    <header className="reports-header">
+      <p className="admin-eyebrow">
+        MediSort Administration
+      </p>
+
+      <h1>Reports & Analytics</h1>
+
+      <p>
+        View medical waste collection and management insights.
+      </p>
+    </header>
+
+    <div className="reports-empty">
+      <span>📊</span>
+
+      <h2>Reports Coming Next</h2>
+
+      <p>
+        Waste analytics and reporting tools will appear here.
+      </p>
+    </div>
+
+  </div>
         ) : (
 
           // =================================================

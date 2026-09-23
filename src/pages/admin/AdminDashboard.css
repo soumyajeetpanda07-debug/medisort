@@ -1875,3 +1875,56 @@ grid-template-columns: 2fr 1fr 1fr 1fr;
 
 
 
+/* ================================
+   WASTE SUMMARY CARDS
+================================ */
+
+.waste-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.waste-summary-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  background: #ffffff;
+  border: 1px solid #e5eaf0;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+.waste-summary-card > span {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  background: #eff6ff;
+  font-size: 21px;
+}
+
+.waste-summary-card p {
+  margin: 0 0 4px;
+  color: #718096;
+  font-size: 13px;
+}
+
+.waste-summary-card strong {
+  color: #172033;
+  font-size: 21px;
+  font-weight: 700;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .waste-summary-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
