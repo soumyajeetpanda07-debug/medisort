@@ -1,10 +1,9 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-
-
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBuhv-6u6XG_NRgjLBHQfKnwDBiff7KhJs",
+  apiKey: "AIzaSyBuhv-6u6xG_NRgjLBHQfKnwDBiff7KhJs",
   authDomain: "medisort-3c367.firebaseapp.com",
   projectId: "medisort-3c367",
   storageBucket: "medisort-3c367.firebasestorage.app",
@@ -15,8 +14,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
+const auth = getAuth(app);
 
-export { db }; 
-
+export { db, auth };
 
 

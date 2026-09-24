@@ -12,7 +12,7 @@ import {
 
 import { db } from "../../firebase";
 
-function AdminDashboard() {
+function AdminDashboard({ onBackToHome }) {
   // =========================================================
   // DASHBOARD DATA
   // =========================================================
@@ -472,16 +472,25 @@ const categoryWeightPercentages = Object.entries(categoryWeights).reduce(
         </nav>
 
         {/* SIDEBAR BOTTOM */}
+<div className="admin-sidebar-bottom">
 
-        <div className="admin-sidebar-bottom">
+  {/* SETTINGS */}
+  <button className="admin-nav-item">
+    ⚙️
+    <span>Settings</span>
+  </button>
 
-          <button className="admin-nav-item">
-            ⚙️
-            <span>Settings</span>
-          </button>
+  {/* HOSPITAL FRONT PAGE */}
+  <button
+    className="admin-nav-item"
+    onClick={onBackToHome}
+  >
+    🏠
+    <span>Hospital Front Page</span>
+  </button>
 
-        </div>
-
+</div>
+        
       </aside>
 
 

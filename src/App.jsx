@@ -7,19 +7,30 @@ function App() {
   const [page, setPage] = useState("home");
 
   // Hospital Dashboard
-  if (page === "hospital") {
-    return <HospitalDashboard />;
-  }
-
+ if (page === "hospital") {
+  return (
+    <HospitalDashboard
+      onBackToHome={() => setPage("home")}
+    />
+  );
+}
   // Collector Dashboard
   if (page === "collector") {
-    return <CollectorDashboard />;
+    return (
+      <CollectorDashboard
+        onBackToHome={() => setPage("home")}
+      />
+    );
   }
 
   // Admin Dashboard
-  if (page === "admin") {
-    return <AdminDashboard />;
-  }
+ if (page === "admin") {
+  return (
+    <AdminDashboard
+      onBackToHome={() => setPage("home")}
+    />
+  );
+}
 
   // Front Page
  return (

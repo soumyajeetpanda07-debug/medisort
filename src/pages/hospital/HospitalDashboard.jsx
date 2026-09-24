@@ -126,8 +126,8 @@ function Toast({ notification, onDismiss }) {
 }
 
 // ─── Main Component ───────────────────────────────────────────────────────────
+function HospitalDashboard({ onBackToHome }) {
 
-function HospitalDashboard() {
   const [page, setPage] = useState("dashboard");
   const [wasteRecords, setWasteRecords] = useState([]);
   const [pickupRequests, setPickupRequests] = useState([]);
@@ -520,7 +520,22 @@ function HospitalDashboard() {
           >
             <span className="ms-nav-icon">⌂</span>Dashboard
           </button>
+          
           <button
+  className="ms-nav-item"
+  onClick={onBackToHome}
+>
+  🏠
+  <span>Hospital Front Page</span>
+</button>
+          
+          
+          
+          
+          
+          
+          <button
+
             className="ms-nav-item"
             onClick={() => setPage("addWaste")}
           >
@@ -637,32 +652,19 @@ function HospitalDashboard() {
         <div className="ms-content">
           {dataError && <div role="alert">{dataError}</div>}
 
-<section className="ms-welcome">
-  <div className="ms-welcome-text">
-    <span className="ms-welcome-small">Hospital Overview</span>
-
-    <h1>AAROGYA Hospital</h1>
-
-    <p>
-      Monitor biomedical waste, pickup requests and collection activity
-      from one place.
-    </p>
-  </div>
-
-  <div className="ms-welcome-status">
-    <span className="ms-welcome-status-dot"></span>
-    <div>
-      <strong>System Active</strong>
-      <small>Live data monitoring</small>
-    </div>
-  </div>
-</section>
-
-
-
-
-
-
+          <section className="ms-welcome">
+            <div className="ms-welcome-text">
+              <span className="ms-welcome-small">Welcome Back!</span>
+              <h1>🏥 AAROGYA Hospital</h1>
+              <p>Your actions make a cleaner, safer and healthier tomorrow.</p>
+            </div>
+            <div className="ms-welcome-message">
+              <strong>Safe Waste</strong>
+              <strong>Healthy People</strong>
+              <strong>Greener Future</strong>
+            </div>
+            <div className="ms-welcome-leaf">🌿</div>
+          </section>
 
           <section className="ms-stat-grid">
             <div className="ms-stat-card">

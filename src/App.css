@@ -3638,3 +3638,71 @@ button, input, select {
     grid-template-columns: 1fr 1fr !important;
   }
 }
+
+
+/* ================================
+   HOSPITAL HOME PAGE
+================================ */
+
+.hospital-home-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f8fc;
+  padding: 30px;
+}
+
+.hospital-home-content {
+  width: 100%;
+  max-width: 700px;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 60px 40px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+.hospital-home-icon {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 22px;
+  background: #e8f5f1;
+  font-size: 45px;
+}
+
+.hospital-home-content h1 {
+  margin: 0 0 15px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #17212b;
+}
+
+.hospital-home-content p {
+  max-width: 550px;
+  margin: 0 auto 30px;
+  line-height: 1.7;
+  color: #667085;
+  font-size: 16px;
+}
+
+.hospital-dashboard-btn {
+  border: none;
+  border-radius: 12px;
+  padding: 13px 24px;
+  background: #087f5b;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.hospital-dashboard-btn:hover {
+  background: #066b4c;
+  transform: translateY(-2px);
+}
