@@ -454,38 +454,42 @@
 /* =========================================================
    STAT CARDS
    ========================================================= */
+/* ============================================================
+   COLLECTOR KPI CARDS
+   ============================================================ */
 
 .collector-stats {
   display: grid;
-
-  grid-template-columns: repeat(4, 1fr);
-
-  gap: 17px;
-
-  margin-bottom: 24px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 22px;
 }
 
 .collector-stat-card {
-  min-height: 120px;
-
-  padding: 18px;
+  min-height: 112px;
+  padding: 18px 20px;
 
   display: flex;
-
   align-items: center;
+  gap: 15px;
 
-  gap: 14px;
-
-  background: white;
-
-  border: 1px solid #e3ecea;
-
+  background: #ffffff;
+  border: 1px solid #e2e9e6;
   border-radius: 16px;
 
-  box-shadow:
-    0 5px 18px rgba(30, 80, 80, 0.04);
+  box-shadow: 0 3px 12px rgba(16, 37, 31, 0.05);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
 
+.collector-stat-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(28, 163, 99, 0.22);
+  box-shadow: 0 8px 22px rgba(16, 37, 31, 0.08);
+}
 .collector-stat-icon {
   width: 47px;
   height: 47px;
@@ -623,34 +627,34 @@
 /* =========================================================
    PICKUP CARDS
    ========================================================= */
+/* ============================================================
+   PICKUP REQUEST CARDS
+   ============================================================ */
 
 .pickup-card {
-  min-height: 90px;
-
-  padding: 15px;
+  min-height: 92px;
+  padding: 15px 16px;
 
   display: flex;
-
   align-items: center;
+  gap: 14px;
 
-  gap: 13px;
-
-  border: 1px solid #edf1f0;
-
-  border-radius: 13px;
+  background: #ffffff;
+  border: 1px solid #e3ebe8;
+  border-radius: 14px;
 
   margin-top: 10px;
 
-  transition: 0.2s;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .pickup-card:hover {
-  border-color: #cde9df;
-
+  border-color: #cce4da;
   transform: translateY(-2px);
-
-  box-shadow:
-    0 7px 18px rgba(30, 80, 80, 0.06);
+  box-shadow: 0 8px 20px rgba(16, 37, 31, 0.07);
 }
 
 .pickup-icon {
@@ -660,91 +664,86 @@
   flex-shrink: 0;
 
   display: flex;
-
   align-items: center;
   justify-content: center;
 
   border-radius: 12px;
 
   background: #e8f7f3;
+  color: #087a57;
 
-  font-size: 22px;
+  font-size: 21px;
 }
 
 .pickup-info {
   flex: 1;
+  min-width: 0;
 }
 
 .pickup-info h3 {
   margin: 0;
 
-  color: #18273d;
-
-  font-size: 14px;
+  color: #18362c;
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .pickup-info p {
-  margin-top: 4px;
+  margin: 4px 0 0;
 
-  color: #7c8898;
-
+  color: #718078;
   font-size: 10px;
 }
 
 .pickup-details {
   display: flex;
-
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 7px;
 
   margin-top: 7px;
 }
 
 .pickup-details span {
-  padding: 4px 7px;
+  padding: 4px 8px;
 
-  border-radius: 5px;
+  border-radius: 6px;
 
-  background: #f5f7f8;
+  background: #f5f8f6;
+  border: 1px solid #e9efec;
 
-  color: #667486;
-
+  color: #61736b;
   font-size: 9px;
-
   font-weight: 600;
 }
 
-
-/* =========================================================
-   STATUS
-   ========================================================= */
+/* ============================================================
+   PICKUP STATUS
+   ============================================================ */
 
 .pickup-status {
-  padding: 6px 9px;
+  padding: 6px 10px;
 
   border-radius: 20px;
 
   font-size: 9px;
-
   font-weight: 700;
 
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .pickup-status.pending {
   background: #fff4db;
-
-  color: #b87500;
+  color: #a66a00;
 }
 
 .pickup-status.assigned {
   background: #e7f1ff;
-
   color: #1767ae;
 }
 
 .pickup-status.on-way {
   background: #e2f8ef;
-
   color: #07895f;
 }
 

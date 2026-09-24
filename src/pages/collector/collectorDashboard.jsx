@@ -299,59 +299,166 @@ function CollectorDashboard() {
       alert("Failed to update waste status.");
     }
   }
-
-  function startQRScanner() {
-    if (scannerRef.current) {
-      scannerRef.current.clear().catch(() => {});
-      scannerRef.current = null;
-    }
-
-    const scanner = new Html5QrcodeScanner(
-      "qr-reader",
-      {
-        fps: 10,
-        qrbox: { width: 250, height: 250 },
-      },
-      false
-    );
-
-    scannerRef.current = scanner;
-
-    scanner.render(
-      async (decodedText) => {
-        console.log("QR Scanned:", decodedText);
-
-        try {
-          const wasteQuery = query(
-            collection(db, "wasteBatches"),
-            where("qrId", "==", decodedText)
-          );
-          const snapshot = await getDocs(wasteQuery);
-
-          if (snapshot.empty) {
-            alert("Waste batch not found in Firebase.");
-            return;
-          }
-
-          const batchDoc = snapshot.docs[0];
-          setScannedWaste({
-            id: batchDoc.id,
-            qrId: decodedText,
-            ...batchDoc.data(),
-          });
-
-          await scanner.clear();
-          scannerRef.current = null;
-        } catch (error) {
-          console.error("Error finding waste batch:", error);
-          alert("Failed to load waste batch.");
-        }
-      },
-      (errorMessage) => {
-        console.log("QR scan message:", errorMessage);
-      }
-    );
+function startQRScanner() {
+  // Clear any existing scanner first
+  if (scannerRef.current) {
+    scannerRef.current.clear().catch(() => {});
+    scannerRef.current = null;
   }
+
+  const scanner = new Html5QrcodeScanner(
+    "qr-reader",
+    {
+      fps: 10,
+      qrbox: {
+        width: 250,
+        height: 250,
+      },
+    },
+    false
+  );
+
+  scannerRef.current = scanner;
+
+  scanner.render(
+    async (decodedText) => {
+      console.log("=================================");
+      console.log("QR SCANNED RAW VALUE:", decodedText);
+      console.log("=================================");
+
+      try {
+        // -----------------------------------------
+        // 1. Clean the scanned QR value
+        // -----------------------------------------
+        let qrId = String(decodedText || "").trim();
+
+        // -----------------------------------------
+        // 2. If QR contains a URL, extract the ID
+        // -----------------------------------------
+        try {
+          if (qrId.startsWith("http://") || qrId.startsWith("https://")) {
+            const url = new URL(qrId);
+
+            const possibleQrId =
+              url.searchParams.get("qrId") ||
+              url.searchParams.get("id");
+
+            if (possibleQrId) {
+              qrId = possibleQrId.trim();
+            } else {
+              const pathParts = url.pathname
+                .split("/")
+                .filter(Boolean);
+
+              if (pathParts.length > 0) {
+                qrId = pathParts[pathParts.length - 1].trim();
+              }
+            }
+          }
+        } catch {
+          console.log("QR is not a URL. Using normal QR ID.");
+        }
+
+        console.log("CLEAN QR ID:", qrId);
+
+        // -----------------------------------------
+        // 3. Make sure something was scanned
+        // -----------------------------------------
+        if (!qrId) {
+          alert("Invalid QR code. Please scan a valid MediSort waste QR.");
+          return;
+        }
+
+        // -----------------------------------------
+        // 4. Search Firebase wasteBatches
+        // -----------------------------------------
+        const wasteQuery = query(
+          collection(db, "wasteBatches"),
+          where("qrId", "==", qrId)
+        );
+
+        const snapshot = await getDocs(wasteQuery);
+
+        console.log(
+          "Firebase wasteBatches found:",
+          snapshot.size
+        );
+
+        // -----------------------------------------
+        // 5. Waste batch does not exist
+        // -----------------------------------------
+        if (snapshot.empty) {
+          console.error(
+            "No waste batch found for QR ID:",
+            qrId
+          );
+
+          alert(
+            `Waste batch not found in Firebase.\n\nQR ID:\n${qrId}\n\nMake sure the hospital generated and saved this QR batch.`
+          );
+
+          return;
+        }
+
+        // -----------------------------------------
+        // 6. Get the real Firebase document
+        // -----------------------------------------
+        const batchDoc = snapshot.docs[0];
+
+        const batchData = batchDoc.data();
+
+        console.log("REAL FIREBASE WASTE BATCH:", batchData);
+
+        // -----------------------------------------
+        // 7. Display real Firebase data
+        // -----------------------------------------
+        setScannedWaste({
+          id: batchDoc.id,
+          qrId: batchData.qrId || qrId,
+          hospital: batchData.hospital || "",
+          wasteType: batchData.wasteType || "",
+          category: batchData.category || "Mixed",
+          weight: Number(batchData.weight) || 0,
+          status: batchData.status || "Pending",
+          createdAt: batchData.createdAt || null,
+          ...batchData,
+        });
+
+        // -----------------------------------------
+        // 8. Stop scanner after successful scan
+        // -----------------------------------------
+        await scanner.clear();
+
+        scannerRef.current = null;
+
+        console.log("QR successfully connected to Firebase.");
+
+      } catch (error) {
+        console.error(
+          "Error finding waste batch:",
+          error
+        );
+
+        alert(
+          "Failed to load waste batch from Firebase.\n\nCheck the browser console for details."
+        );
+      }
+    },
+
+    (errorMessage) => {
+      // QR scanner continuously reports
+      // "No QR code found" while searching.
+      // Do not show alerts for every scan frame.
+      console.log("QR scanner:", errorMessage);
+    }
+  );
+}
+
+
+
+
+
+
 
   function renderPickupList() {
     if (pickupRequests.length === 0) {

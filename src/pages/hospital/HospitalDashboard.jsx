@@ -601,9 +601,7 @@ function HospitalDashboard() {
 
       <main className="ms-main">
         <header className="ms-topbar">
-          <button className="ms-menu-button" aria-label="Menu">
-            ☰
-          </button>
+       
 
           {/* React-controlled search — no window mutation */}
           <div className="ms-search">
@@ -639,19 +637,32 @@ function HospitalDashboard() {
         <div className="ms-content">
           {dataError && <div role="alert">{dataError}</div>}
 
-          <section className="ms-welcome">
-            <div className="ms-welcome-text">
-              <span className="ms-welcome-small">Welcome Back!</span>
-              <h1>🏥 AAROGYA Hospital</h1>
-              <p>Your actions make a cleaner, safer and healthier tomorrow.</p>
-            </div>
-            <div className="ms-welcome-message">
-              <strong>Safe Waste</strong>
-              <strong>Healthy People</strong>
-              <strong>Greener Future</strong>
-            </div>
-            <div className="ms-welcome-leaf">🌿</div>
-          </section>
+<section className="ms-welcome">
+  <div className="ms-welcome-text">
+    <span className="ms-welcome-small">Hospital Overview</span>
+
+    <h1>AAROGYA Hospital</h1>
+
+    <p>
+      Monitor biomedical waste, pickup requests and collection activity
+      from one place.
+    </p>
+  </div>
+
+  <div className="ms-welcome-status">
+    <span className="ms-welcome-status-dot"></span>
+    <div>
+      <strong>System Active</strong>
+      <small>Live data monitoring</small>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
 
           <section className="ms-stat-grid">
             <div className="ms-stat-card">
@@ -762,43 +773,218 @@ function HospitalDashboard() {
             </div>
 
             {/* Pickup Status */}
-            <div className="ms-card pickup-status-card">
-              <div className="ms-card-header">
-                <div>
-                  <h2>🚚 Pickup Status</h2>
-                  <p>Live status of your waste collection request</p>
-                </div>
+            {/* ================= LIVE PICKUP STATUS ================= */}
+
+<div className="ms-card ms-modern-status-card">
+
+  {/* HEADER */}
+  <div className="ms-status-header">
+
+    <div className="ms-status-heading">
+
+      <div className="ms-status-icon">
+        🚚
+      </div>
+
+      <div>
+        <h2>Pickup Status</h2>
+
+        <p>
+          Live status of your waste collection requests
+        </p>
+      </div>
+
+    </div>
+
+    <div className="ms-live-indicator">
+      <span></span>
+      Live
+    </div>
+
+  </div>
+
+
+  {/* STATUS LIST */}
+
+  {pickupRequests.length === 0 ? (
+
+    <div className="ms-status-empty">
+
+      <div className="ms-status-empty-icon">
+        📦
+      </div>
+
+      <strong>No pickup requests</strong>
+
+      <span>
+        There are currently no waste collection requests.
+      </span>
+
+    </div>
+
+  ) : (
+
+    <div className="ms-status-list">
+
+      {pickupRequests
+        .slice(0, 4)
+        .map((request, index) => {
+
+          const rawStatus =
+            request.status || "Pending";
+
+          const status =
+            String(rawStatus).toLowerCase();
+
+          const statusClass =
+            status.replace(/\s+/g, "-");
+
+          let requestDate = null;
+
+          if (request.requestedAt?.toDate) {
+            requestDate =
+              request.requestedAt.toDate();
+          } else if (request.requestedAt) {
+            requestDate =
+              new Date(request.requestedAt);
+          }
+
+          const dateText = requestDate
+            ? requestDate.toLocaleDateString(
+                "en-IN",
+                {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                }
+              )
+            : "Date unavailable";
+
+          const timeText = requestDate
+            ? requestDate.toLocaleTimeString(
+                "en-IN",
+                {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                }
+              )
+            : "—";
+
+          const weight =
+            Number(request.weight) || 0;
+
+          return (
+
+            <div
+              className="ms-status-item"
+              key={request.id || index}
+            >
+
+              {/* LEFT ICON */}
+
+              <div
+                className={`ms-status-item-icon ${statusClass}`}
+              >
+                🚚
               </div>
-              {sortedPickups.length === 0 ? (
-                <div className="no-pickup-status">
-                  <p>
-                    {loading
-                      ? "Loading pickup requests…"
-                      : "No pickup request found."}
-                  </p>
-                </div>
-              ) : (
-                sortedPickups.slice(0, 3).map((request) => (
-                  <div className="hospital-pickup-row" key={request.id}>
-                    <div className="hospital-pickup-info">
-                      <strong>
-                        {request.wasteType || "Biomedical Waste Collection"}
-                      </strong>
-                      <span>{formatDate(request.requestedAt)}</span>
-                    </div>
-                    <div
-                      className={`hospital-pickup-status ${String(
-                        request.status || "pending"
-                      )
-                        .toLowerCase()
-                        .replace(/\s+/g, "-")}`}
-                    >
-                      {request.status || "Pending"}
-                    </div>
+
+
+              {/* MAIN INFORMATION */}
+
+              <div className="ms-status-main">
+
+                <div className="ms-status-main-top">
+
+                  <div>
+
+                    <h3>
+                      {request.hospital ||
+                        "AAROGYA Hospital"}
+                    </h3>
+
+                    <p>
+                      Biomedical Waste Collection
+                    </p>
+
                   </div>
-                ))
-              )}
+
+                  {/* STATUS */}
+
+                  <span
+                    className={`ms-status-pill ${statusClass}`}
+                  >
+
+                    <span className="ms-status-pill-dot"></span>
+
+                    {rawStatus}
+
+                  </span>
+
+                </div>
+
+
+                {/* DETAILS */}
+
+                <div className="ms-status-details">
+
+                  <span>
+                    🗓️ {dateText}
+                  </span>
+
+                  <span>
+                    🕐 {timeText}
+                  </span>
+
+                  <span>
+                    ⚖️ {weight.toFixed(1)} kg
+                  </span>
+
+                  <span>
+                    🏷️ {request.category || "Mixed"}
+                  </span>
+
+                </div>
+
+              </div>
+
             </div>
+
+          );
+
+        })}
+
+    </div>
+
+  )}
+
+
+  {/* FOOTER */}
+
+  {pickupRequests.length > 0 && (
+
+    <div className="ms-status-footer">
+
+      <span>
+        Showing latest {Math.min(
+          pickupRequests.length,
+          4
+        )} requests
+      </span>
+
+      <button
+        type="button"
+        onClick={() => {
+          alert("All pickup requests are available in Pickup Requests.");
+        }}
+      >
+        View All Pickups →
+      </button>
+
+    </div>
+
+  )}
+
+</div>
 
             {/* QR Waste Tracking */}
             <div className="ms-card ms-qr-card">
@@ -921,60 +1107,186 @@ function HospitalDashboard() {
           </section>
 
           <section className="ms-bottom-grid">
+        
+        
+        
+        
+        
+        
             {/* Pickup Schedule */}
-            <div className="ms-card">
-              <div className="ms-card-header">
-                <div>
-                  <h2>🚚 Pickup Schedule</h2>
-                  <p>Recent and upcoming collections</p>
-                </div>
-              </div>
-              <div className="ms-pickup-list">
-                {sortedPickups.length ? (
-                  sortedPickups.slice(0, 4).map((request) => (
-                    <div className="ms-pickup" key={request.id}>
-                      <span
-                        className={`pickup-dot ${
-                          String(request.status || "pending").toLowerCase() ===
-                          "collected"
-                            ? "green-dot"
-                            : "orange-dot"
-                        }`}
-                      />
-                      <div>
-                        <strong>
-                          {formatDate(
-                            request.scheduledAt || request.requestedAt
-                          )}
-                        </strong>
-                        <small>
-                          {request.wasteType || "Biomedical Waste"}
-                        </small>
-                      </div>
-                      <span
-                        className={
-                          String(request.status || "pending").toLowerCase() ===
-                          "pending"
-                            ? "pending"
-                            : "scheduled"
-                        }
-                      >
-                        {request.status || "Pending"}
-                      </span>
-                    </div>
-                  ))
-                ) : (
-                  <div className="ms-pickup">
-                    <div>
-                      <strong>
-                        {loading ? "Loading schedule…" : "No pickup scheduled"}
-                      </strong>
-                      <small>New pickup requests will appear here</small>
-                    </div>
-                  </div>
+
+{/* ================= MODERN PICKUP SCHEDULE ================= */}
+
+<div className="ms-card ms-modern-schedule-card">
+
+  {/* HEADER */}
+  <div className="ms-modern-schedule-header">
+
+    <div>
+      <div className="ms-modern-schedule-title">
+        <span className="ms-modern-schedule-icon">🚚</span>
+
+        <div>
+          <h2>Pickup Schedule</h2>
+          <p>Recent and upcoming waste collections</p>
+        </div>
+      </div>
+    </div>
+
+    <button
+      type="button"
+      className="ms-modern-view-all"
+      onClick={() => {
+        alert("Showing all pickup requests.");
+      }}
+    >
+      View All →
+    </button>
+
+  </div>
+
+  {/* PICKUP ITEMS */}
+  <div className="ms-modern-schedule-list">
+
+    {pickupRequests.length === 0 ? (
+
+      <div className="ms-modern-empty">
+        <div className="ms-modern-empty-icon">📦</div>
+
+        <strong>No pickup requests</strong>
+
+        <span>
+          Your hospital has no pickup requests yet.
+        </span>
+      </div>
+
+    ) : (
+
+      pickupRequests
+        .slice(0, 5)
+        .map((request, index) => {
+
+          let requestDate = null;
+
+          if (request.requestedAt?.toDate) {
+            requestDate = request.requestedAt.toDate();
+          } else if (request.requestedAt) {
+            requestDate = new Date(request.requestedAt);
+          }
+
+          const status =
+            request.status || "Pending";
+
+          const normalizedStatus =
+            String(status)
+              .toLowerCase()
+              .replace(/\s+/g, "-");
+
+          const dateText = requestDate
+            ? requestDate.toLocaleDateString("en-IN", {
+                day: "2-digit",
+                month: "short",
+              })
+            : "Date unavailable";
+
+          const timeText = requestDate
+            ? requestDate.toLocaleTimeString("en-IN", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })
+            : "—";
+
+          const weight =
+            Number(request.weight) || 0;
+
+          return (
+            <div
+              className="ms-modern-pickup-item"
+              key={request.id || index}
+            >
+
+              {/* TIMELINE */}
+              <div className="ms-modern-timeline">
+
+                <span
+                  className={`ms-modern-status-dot ${normalizedStatus}`}
+                ></span>
+
+                {index <
+                  Math.min(pickupRequests.length, 5) - 1 && (
+                  <span className="ms-modern-timeline-line"></span>
                 )}
+
               </div>
+
+              {/* MAIN CONTENT */}
+              <div className="ms-modern-pickup-content">
+
+                <div className="ms-modern-pickup-top">
+
+                  <div>
+                    <strong>
+                      {dateText} · {timeText}
+                    </strong>
+
+                    <span>
+                      {request.wasteType ||
+                        "Biomedical Waste"}
+                    </span>
+                  </div>
+
+                  <span
+                    className={`ms-modern-status ${normalizedStatus}`}
+                  >
+                    {status}
+                  </span>
+
+                </div>
+
+                <div className="ms-modern-pickup-meta">
+
+                  <span>
+                    🏥{" "}
+                    {request.hospital ||
+                      "AAROGYA Hospital"}
+                  </span>
+
+                  <span>
+                    🏷️{" "}
+                    {request.category ||
+                      "Mixed"}
+                  </span>
+
+                  <span>
+                    ⚖️{" "}
+                    {weight.toFixed(1)} kg
+                  </span>
+
+                </div>
+
+              </div>
+
             </div>
+          );
+        })
+
+    )}
+
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
 
             {/* Alerts & Notifications */}
             {/* Bug fix: Rename map param from "alert" to "alertItem" to avoid
