@@ -15,8 +15,12 @@ function AddWaste({ onBack }) {
       return;
     }
 
-    if (!weight || Number(weight) <= 0) {
-      alert("⚠️ Please enter a valid weight.");
+    if (
+      !weight ||
+      Number(weight) <= 0 ||
+      Number(weight) > 1000
+    ) {
+      alert("⚠️ Please enter a weight between 0.1 kg and 1000 kg.");
       return;
     }
 
@@ -53,8 +57,12 @@ function AddWaste({ onBack }) {
       return;
     }
 
-    if (!weight || Number(weight) <= 0) {
-      alert("⚠️ Please enter a valid weight.");
+    if (
+      !weight ||
+      Number(weight) <= 0 ||
+      Number(weight) > 1000
+    ) {
+      alert("⚠️ Please enter a weight between 0.1 kg and 1000 kg.");
       return;
     }
 
@@ -65,7 +73,7 @@ function AddWaste({ onBack }) {
 
     try {
       await addDoc(collection(db, "wasteRecords"), {
-        hospital: "AARO­GYA Hospital",
+        hospital: "AAROGYA Hospital",
         wasteType: wasteType,
         weight: Number(weight),
         category: category,
@@ -93,28 +101,16 @@ function AddWaste({ onBack }) {
   return (
     <div className="add-waste-page">
 
-<button
-  type="button"
-  className="back-button"
-  onClick={onBack}
->
-  ← Back 
-</button>
-
-
-
-
-
+      <button
+        type="button"
+        className="back-button"
+        onClick={onBack}
+      >
+        ← Back
+      </button>
 
       {/* HEADER */}
       <div className="add-waste-header">
-
-
-
-
-
-
-
 
         <div className="waste-title-icon">
           🗑️
@@ -124,6 +120,7 @@ function AddWaste({ onBack }) {
           <h1>Add Medical Waste</h1>
           <p>AAROGYA Hospital</p>
         </div>
+
       </div>
 
       {/* FORM CARD */}
@@ -131,6 +128,7 @@ function AddWaste({ onBack }) {
 
         {/* WASTE MATERIAL */}
         <div className="form-group">
+
           <label>Select Waste Material</label>
 
           <select
@@ -140,7 +138,9 @@ function AddWaste({ onBack }) {
               setCategory("");
             }}
           >
-            <option value="">-- Select Waste --</option>
+            <option value="">
+              -- Select Waste --
+            </option>
 
             <option value="Blood-soaked dressing">
               Blood-soaked dressing
@@ -158,28 +158,33 @@ function AddWaste({ onBack }) {
               Glass vial
             </option>
           </select>
+
         </div>
 
         {/* WEIGHT */}
         <div className="form-group">
+
           <label>Enter Weight</label>
 
-    <div className="weight-input">
+          <div className="weight-input">
 
-  <span>⚖️</span>
+            <span>⚖️</span>
 
-  <input
-    type="number"
-    min="0"
-    step="0.01"
-    placeholder="Enter weight"
-    value={weight}
-    onChange={(e) => setWeight(e.target.value)}
-  />
+            <input
+              type="number"
+              min="0.1"
+              max="1000"
+              step="0.1"
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
+            />
 
-  <span className="kg-text">kg</span>
+            <span className="kg-text">
+              kg
+            </span>
 
-</div>
+          </div>
+
         </div>
 
         {/* CHECK CATEGORY */}
@@ -193,15 +198,23 @@ function AddWaste({ onBack }) {
 
         {/* CATEGORY RESULT */}
         {category && (
-          <div className={`category-result ${category.toLowerCase()}`}>
+          <div
+            className={`category-result ${category.toLowerCase()}`}
+          >
 
             <div className="category-result-header">
-              <span className="category-color-icon">✓</span>
+
+              <span className="category-color-icon">
+                ✓
+              </span>
 
               <div>
                 <h2>Waste Category</h2>
-                <p>Recommended biomedical waste category</p>
+                <p>
+                  Recommended biomedical waste category
+                </p>
               </div>
+
             </div>
 
             <div className="category-info">
@@ -211,6 +224,7 @@ function AddWaste({ onBack }) {
               ></div>
 
               <div>
+
                 <h3>{category}</h3>
 
                 <p>
@@ -220,6 +234,7 @@ function AddWaste({ onBack }) {
                 <p>
                   <strong>Weight:</strong> {weight} kg
                 </p>
+
               </div>
 
             </div>
@@ -237,6 +252,7 @@ function AddWaste({ onBack }) {
         )}
 
       </div>
+
     </div>
   );
 }
