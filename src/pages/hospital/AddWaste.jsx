@@ -479,7 +479,15 @@ function AddWaste({ onBack }) {
 
               {/* Weight */}
               <div className="aw-field">
-                <label className="aw-label">Weight <span className="aw-req">*</span></label>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                  <label className="aw-label" style={{ margin: 0 }}>Weight (kg) <span className="aw-req">*</span></label>
+                  {weight && Number(weight) > 0 && (
+                    <span className={`aw-capacity-tag ${Number(weight) <= 10 ? "normal" : Number(weight) <= 25 ? "heavy" : "overloaded"}`}>
+                      {Number(weight) <= 10 ? "🟢 Standard Bag Load" : Number(weight) <= 25 ? "🟡 Heavy Bag Load" : "🔴 Overfilled Bag"}
+                    </span>
+                  )}
+                </div>
+                
                 <div className="aw-weight-wrap">
                   <span className="aw-weight-icon">⚖️</span>
                   <input className={`aw-input ${errors.weight ? "aw-input-err" : ""}`}
@@ -489,10 +497,49 @@ function AddWaste({ onBack }) {
                   <span className="aw-weight-unit">kg</span>
                 </div>
 
+                {/* Quick-Add Weight Presets */}
+                <div className="aw-weight-presets">
+                  {[0.5, 1.0, 2.0, 5.0, 10.0].map(amt => (
+                    <button
+                      key={amt}
+                      type="button"
+                      className="aw-preset-btn"
+                      onClick={() => {
+                        const cur = parseFloat(weight) || 0;
+                        const next = Math.min(1000, Number((cur + amt).toFixed(2)));
+                        setWeight(String(next));
+                        setErrors(p => ({ ...p, weight: undefined }));
+                      }}
+                    >
+                      +{amt} kg
+                    </button>
+                  ))}
+                  {weight && (
+                    <button
+                      type="button"
+                      className="aw-preset-btn clear"
+                      onClick={() => setWeight("")}
+                      title="Clear weight"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+
                 {weight && Number(weight) > 0 && (
                   <div className="aw-wbar-wrap aw-anim-fade">
-                    <div className="aw-wbar"><div className="aw-wbar-fill" style={{ width: `${Math.min((Number(weight)/WEIGHT_BAR_MAX)*100,100)}%` }}/></div>
-                    <div className="aw-wbar-labels"><span>0 kg</span><span>{Number(weight) > WEIGHT_BAR_MAX ? `${WEIGHT_BAR_MAX}+` : WEIGHT_BAR_MAX} kg</span></div>
+                    <div className="aw-wbar">
+                      <div
+                        className={`aw-wbar-fill ${Number(weight) <= 10 ? "normal" : Number(weight) <= 25 ? "heavy" : "overloaded"}`}
+                        style={{ width: `${Math.min((Number(weight)/WEIGHT_BAR_MAX)*100,100)}%` }}
+                      />
+                    </div>
+                    <div className="aw-wbar-labels">
+                      <span>0 kg</span>
+                      <span>10 kg (Optimal)</span>
+                      <span>25 kg (Max Load)</span>
+                      <span>{Number(weight) > WEIGHT_BAR_MAX ? `${WEIGHT_BAR_MAX}+` : WEIGHT_BAR_MAX} kg</span>
+                    </div>
                   </div>
                 )}
                 {errors.weight && <p className="aw-err">{errors.weight}</p>}
@@ -504,7 +551,7 @@ function AddWaste({ onBack }) {
               </button>
             </div>
 
-            {/* Result Preview */}
+            {/* Result Preview & Live CPCB Tag Sticker */}
             <div className="aw-result-card">
               {classified && effectiveCat && catMeta ? (
                 <div className={`aw-result-panel aw-cat-${effectiveCat.toLowerCase()}`}>
@@ -518,26 +565,51 @@ function AddWaste({ onBack }) {
 
                   <div className="aw-color-strip" style={{background: catMeta.color}}/>
 
-                  <div className="aw-result-summary">
-                    {[
-                      { ico: sel?.icon ?? "🗑️", lbl: "Waste Material", val: wasteLabel },
-                      { ico: "⚖️", lbl: "Weight", val: `${weight} kg` },
-                      { ico: "🏷️", lbl: "Category", val: effectiveCat },
-                      { ico: "🏥", lbl: "Hospital", val: HOSPITAL },
-                    ].map(s => (
-                      <div key={s.lbl} className="aw-summary-item">
-                        <span className="aw-summary-icon">{s.ico}</span>
-                        <div><small>{s.lbl}</small><strong>{s.val}</strong></div>
+                  {/* Official Live CPCB Bag Tag Sticker Card */}
+                  <div className="aw-bag-tag-preview">
+                    <div className="aw-tag-header" style={{ borderLeft: `5px solid ${catMeta.color}` }}>
+                      <div>
+                        <div className="aw-tag-kicker">CPCB BARCODE BAG TAG • FORM VI</div>
+                        <div className="aw-tag-facility">{HOSPITAL}</div>
                       </div>
-                    ))}
+                      <div className="aw-tag-cat-badge" style={{ background: catMeta.color, color: effectiveCat === "YELLOW" ? "#000" : "#fff" }}>
+                        {effectiveCat}
+                      </div>
+                    </div>
+
+                    <div className="aw-tag-barcode-strip">
+                      <div className="aw-barcode-lines">
+                        <span/><span className="w-fat"/><span/><span className="w-fat"/><span/><span/><span className="w-fat"/><span/><span/><span className="w-fat"/><span/><span className="w-fat"/><span/><span/><span className="w-fat"/>
+                      </div>
+                      <div className="aw-tag-code">BMW-AAR-2026-B{Math.floor(Math.random() * 900 + 100)}</div>
+                    </div>
+
+                    <div className="aw-tag-details-grid">
+                      <div>
+                        <small>MATERIAL</small>
+                        <strong>{wasteLabel}</strong>
+                      </div>
+                      <div>
+                        <small>NET WEIGHT</small>
+                        <strong className="text-weight">{weight} kg</strong>
+                      </div>
+                      <div>
+                        <small>GENERATED</small>
+                        <strong>{new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}</strong>
+                      </div>
+                      <div>
+                        <small>DISPOSAL</small>
+                        <strong>{effectiveCat === "YELLOW" ? "Incineration" : effectiveCat === "RED" ? "Autoclave" : effectiveCat === "WHITE" ? "Encapsulate" : "Disinfect"}</strong>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="aw-result-btns">
                     <button type="button" className="aw-save-btn" onClick={saveWaste} disabled={saving}>
                       {saving ? "⏳ Saving…" : "💾 Save Record"}
                     </button>
-                    <button type="button" className="aw-print-btn" onClick={() => window.print()} title="Print Slip">
-                      🖨️
+                    <button type="button" className="aw-print-btn" onClick={() => window.print()} title="Print Bag Sticker">
+                      🖨️ Print Tag
                     </button>
                   </div>
                 </div>
