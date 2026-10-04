@@ -304,7 +304,8 @@ function FrontPage({ onHospitalClick, onCollectorClick, onAdminClick, onOpenAiAs
           {/* System Status Pill */}
           <div className="navbar-status-pill">
             <span className="status-dot-live" />
-            System Online (24ms)
+            <span className="status-text-full">System Online (24ms)</span>
+            <span className="status-text-compact">24ms</span>
           </div>
 
           {/* Language Selector */}
@@ -314,19 +315,28 @@ function FrontPage({ onHospitalClick, onCollectorClick, onAdminClick, onOpenAiAs
               type="button"
               className={`navbar-lang-opt ${lang === "en" ? "active" : ""}`}
               onClick={() => handleLangChange("en")}
-            >English</button>
+            >
+              <span className="lang-full">English</span>
+              <span className="lang-short">EN</span>
+            </button>
             <span className="lang-divider">|</span>
             <button
               type="button"
               className={`navbar-lang-opt ${lang === "hi" ? "active" : ""}`}
               onClick={() => handleLangChange("hi")}
-            >हिंदी</button>
+            >
+              <span className="lang-full">हिंदी</span>
+              <span className="lang-short">HI</span>
+            </button>
             <span className="lang-divider">|</span>
             <button
               type="button"
               className={`navbar-lang-opt ${lang === "or" ? "active" : ""}`}
               onClick={() => handleLangChange("or")}
-            >ଓଡ଼ିଆ</button>
+            >
+              <span className="lang-full">ଓଡ଼ିଆ</span>
+              <span className="lang-short">OD</span>
+            </button>
             <span className="lang-chevron">▾</span>
           </div>
         </div>
