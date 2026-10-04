@@ -44,34 +44,50 @@
 
 /* ─── Header ─── */
 .ai-modal-header {
-  padding: 18px 24px;
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.95));
+  padding: 16px 20px 12px;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.88), rgba(15, 23, 42, 0.98));
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ai-modal-header-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 14px;
 }
 
 .ai-modal-branding {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+.ai-modal-brand-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .ai-spark-badge {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 12px;
   background: linear-gradient(135deg, #10b981, #06b6d4);
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+  flex-shrink: 0;
 }
 
 .ai-spark-icon {
-  font-size: 22px;
+  font-size: 20px;
   animation: aiSpinPulse 3s infinite ease-in-out;
 }
 
@@ -83,16 +99,17 @@
 .ai-modal-title-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .ai-modal-title-row h2 {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 700;
   margin: 0;
   letter-spacing: -0.01em;
   color: #ffffff;
+  line-height: 1.25;
 }
 
 .ai-version-tag {
@@ -139,18 +156,50 @@
 }
 
 .ai-modal-sub {
-  margin: 3px 0 0;
-  font-size: 0.82rem;
+  margin: 0;
+  font-size: 0.78rem;
   color: #94a3b8;
 }
 
-.ai-header-actions {
+.ai-header-top-actions {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
 }
 
-/* Language Toggle Group (English | हिंदी | ଓଡ଼ିଆ) */
+/* SFX Toggle Button */
+.ai-sfx-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ai-sfx-toggle-btn.on {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #34d399;
+}
+
+.ai-sfx-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Header Language Switcher Bar */
+.ai-header-lang-bar {
+  display: flex;
+  align-items: center;
+}
+
 .ai-lang-toggle-group {
   display: flex;
   align-items: center;
@@ -167,7 +216,7 @@
   color: #94a3b8;
   font-size: 0.74rem;
   font-weight: 700;
-  padding: 5px 11px;
+  padding: 5px 12px;
   border-radius: 999px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -185,6 +234,14 @@
   box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
 }
 
+.ai-lang-label-short {
+  display: none;
+}
+
+.ai-lang-label-full {
+  display: inline;
+}
+
 .ai-settings-btn,
 .ai-modal-close-btn {
   background: rgba(255, 255, 255, 0.06);
@@ -199,6 +256,7 @@
   cursor: pointer;
   font-size: 15px;
   transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .ai-settings-btn:hover,
@@ -3444,4 +3502,529 @@
     margin: 0;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   MOBILE OPTIMIZATION (max-width: 640px)
+   Full-screen modal, touch-scrollable tabs, thumb-friendly HUD camera,
+   clean stacked barcode studio, and accessible action buttons
+   ══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 640px) {
+  /* 1. Backdrop & Modal Container */
+  .ai-modal-backdrop {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .ai-assistant-modal {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  /* 2. Header Layout */
+  .ai-modal-header {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .ai-modal-header-top {
+    gap: 8px;
+  }
+
+  .ai-spark-badge {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+  }
+
+  .ai-spark-icon {
+    font-size: 17px;
+  }
+
+  .ai-modal-title-row {
+    gap: 6px;
+  }
+
+  .ai-modal-title-row h2 {
+    font-size: 0.96rem;
+    line-height: 1.2;
+  }
+
+  .ai-engine-status-badge {
+    font-size: 0.65rem;
+    padding: 2px 7px;
+    gap: 4px;
+  }
+
+  .ai-modal-sub {
+    display: none;
+  }
+
+  .ai-header-top-actions {
+    gap: 6px;
+  }
+
+  .ai-sfx-text {
+    display: none;
+  }
+
+  .ai-sfx-toggle-btn {
+    padding: 6px 8px;
+    min-width: 32px;
+    height: 32px;
+    justify-content: center;
+    border-radius: 8px;
+  }
+
+  .ai-settings-btn,
+  .ai-modal-close-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+    border-radius: 8px;
+  }
+
+  /* Language Switcher Bar on Mobile */
+  .ai-header-lang-bar {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .ai-lang-toggle-group {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 2px;
+    gap: 2px;
+  }
+
+  .ai-lang-pill {
+    padding: 5px 2px;
+    font-size: 0.76rem;
+    text-align: center;
+    width: 100%;
+    border-radius: 999px;
+  }
+
+  .ai-lang-label-full {
+    display: inline;
+  }
+
+  /* 3. Horizontal Touch-Scrollable Tabs */
+  .ai-tab-nav {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+    padding: 4px 8px 0;
+    gap: 4px;
+  }
+
+  .ai-tab-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ai-tab-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 8px 11px;
+    font-size: 0.78rem;
+    gap: 5px;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .ai-hotkey-kbd {
+    display: none !important;
+  }
+
+  .ai-pulse-pill-badge {
+    display: none !important;
+  }
+
+  /* 4. Modal Body */
+  .ai-modal-body {
+    padding: 12px 10px;
+    gap: 12px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* 5. Camera Viewfinder on Mobile */
+  .ai-camera-container {
+    min-height: 240px;
+    border-radius: 12px;
+  }
+
+  .ai-viewfinder-wrapper {
+    height: 250px;
+    max-height: 36vh;
+  }
+
+  .ai-snapshot-preview {
+    height: 250px;
+    max-height: 36vh;
+  }
+
+  .ai-hud-status {
+    top: 10px;
+    bottom: auto;
+    font-size: 0.66rem;
+    padding: 3px 9px;
+    max-width: 90%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .ai-camera-controls {
+    bottom: 12px;
+    gap: 16px;
+  }
+
+  .ai-shutter-btn {
+    width: 56px;
+    height: 56px;
+  }
+
+  .ai-shutter-inner {
+    width: 42px;
+    height: 42px;
+  }
+
+  .ai-upload-shortcut {
+    width: 38px;
+    height: 38px;
+    font-size: 15px;
+  }
+
+  /* 6. Text Chat & Voice on Mobile */
+  .ai-chat-history {
+    min-height: 180px;
+    max-height: 34vh;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .ai-chat-bubble {
+    max-width: 92%;
+    font-size: 0.82rem;
+    padding: 8px 12px;
+  }
+
+  .ai-chat-form input {
+    font-size: 16px !important;
+    padding: 10px 12px;
+  }
+
+  .ai-chat-form button {
+    padding: 0 14px;
+    font-size: 0.82rem;
+  }
+
+  .ai-voice-controls-bar {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  .ai-voice-right-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  /* 7. Sample Chips */
+  .ai-samples-bar {
+    gap: 6px;
+  }
+
+  .ai-sample-chip {
+    padding: 5px 10px;
+    font-size: 0.74rem;
+  }
+
+  /* 8. Result Card on Mobile */
+  .ai-result-panel {
+    padding: 14px 12px;
+    border-radius: 12px;
+    gap: 10px;
+  }
+
+  .ai-result-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .ai-result-meta-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .ai-result-details-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .ai-result-footer {
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .ai-apply-btn,
+  .ai-dismiss-result-btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 42px;
+  }
+
+  /* 9. Contamination Tray Audit Tab */
+  .ai-tray-hero {
+    padding: 12px;
+    border-radius: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .ai-tray-target-chips {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+
+  .ai-tray-target-chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ai-tray-presets-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .ai-tray-preset-card {
+    padding: 10px 12px;
+  }
+
+  .ai-tray-input-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .ai-tray-input {
+    width: 100%;
+    font-size: 16px !important;
+  }
+
+  .ai-tray-submit-btn {
+    width: 100%;
+    min-height: 42px;
+    justify-content: center;
+  }
+
+  /* 10. Barcode Studio Tab */
+  .ai-barcode-hero {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .ai-barcode-studio-grid {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    gap: 14px;
+  }
+
+  .ai-barcode-controls-card {
+    padding: 12px 10px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .ai-barcode-select,
+  .ai-barcode-input {
+    font-size: 16px !important;
+    padding: 9px 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .ai-barcode-cat-pills {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .ai-cat-pill-btn {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 6px;
+    font-size: 0.74rem;
+    justify-content: center;
+  }
+
+  .ai-weight-adjuster-row {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .ai-weight-delta-buttons {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .ai-facility-meta-card {
+    padding: 8px 10px;
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  .meta-card-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .meta-card-row span,
+  .meta-card-row code {
+    text-align: left;
+    white-space: normal;
+    word-break: break-all;
+  }
+
+  .ai-barcode-preview-card {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .ai-tag-size-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .ai-size-pill {
+    font-size: 0.72rem;
+    padding: 5px 8px;
+  }
+
+  .ai-tag-action-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .ai-tag-print-btn,
+  .ai-tag-manifest-btn,
+  .ai-tag-apply-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 8px 6px;
+    font-size: 0.74rem;
+    min-height: 38px;
+  }
+
+  .cpcb-printable-tag-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 6px;
+    border-radius: 10px;
+  }
+
+  .cpcb-tag-sticker {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    padding: 8px 10px;
+    gap: 5px;
+  }
+
+  .cpcb-category-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
+
+  .cat-banner-right {
+    max-width: 100%;
+    text-align: left;
+    white-space: normal;
+    font-size: 0.52rem;
+  }
+
+  .cpcb-tag-id-row {
+    padding: 4px 6px;
+    gap: 6px;
+  }
+
+  .cpcb-barcode-vector {
+    height: 32px;
+  }
+
+  .cpcb-barcode-human-serial {
+    font-size: 0.62rem;
+  }
+
+  .cpcb-qr-svg {
+    width: 52px;
+    height: 52px;
+  }
+
+  .cpcb-manifest-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 3px 6px;
+  }
+
+  .manifest-val {
+    font-size: 0.58rem;
+  }
+
+  .cpcb-tag-footer {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .ai-barcode-notice-footer {
+    width: 100%;
+    max-width: 100%;
+    flex-wrap: wrap;
+    font-size: 0.68rem;
+    word-break: break-word;
+  }
+
+  /* 11. Settings Drawer */
+  .ai-settings-drawer {
+    padding: 12px 14px;
+  }
+
+  .ai-settings-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ai-test-key-btn,
+  .ai-settings-save {
+    width: 100%;
+    justify-content: center;
+    min-height: 40px;
+  }
+}
+
 

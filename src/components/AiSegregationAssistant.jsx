@@ -2794,73 +2794,82 @@ Return ONLY valid JSON matching this schema:
       >
         {/* Header */}
         <header className="ai-modal-header">
-          <div className="ai-modal-branding">
-            <div className="ai-spark-badge">
-              <span className="ai-spark-icon">✨</span>
-            </div>
-            <div>
-              <div className="ai-modal-title-row">
-                <h2>{t.title}</h2>
-                {isCloudAiActive ? (
-                  <span className="ai-engine-status-badge online">
-                    <span className="ai-pulse-dot-green" /> {t.online}
-                  </span>
-                ) : (
-                  <span className="ai-engine-status-badge offline">
-                    ⚡ {t.offline}
-                  </span>
-                )}
+          <div className="ai-modal-header-top">
+            <div className="ai-modal-branding">
+              <div className="ai-spark-badge">
+                <span className="ai-spark-icon">✨</span>
               </div>
-              <p className="ai-modal-sub">{t.subtitle}</p>
+              <div className="ai-modal-brand-text">
+                <div className="ai-modal-title-row">
+                  <h2>{t.title}</h2>
+                  {isCloudAiActive ? (
+                    <span className="ai-engine-status-badge online">
+                      <span className="ai-pulse-dot-green" /> {t.online}
+                    </span>
+                  ) : (
+                    <span className="ai-engine-status-badge offline">
+                      ⚡ {t.offline}
+                    </span>
+                  )}
+                </div>
+                <p className="ai-modal-sub">{t.subtitle}</p>
+              </div>
+            </div>
+
+            <div className="ai-header-top-actions">
+              {/* Medical Sound FX Audio Toggle */}
+              <button
+                type="button"
+                className={`ai-sfx-toggle-btn ${sfxEnabled ? "on" : "off"}`}
+                onClick={toggleSfx}
+                title={sfxEnabled ? "Medical Audio FX Enabled (Click to Mute)" : "Medical Audio FX Muted (Click to Unmute)"}
+              >
+                <span className="ai-sfx-icon">{sfxEnabled ? "🔊" : "🔇"}</span>
+                <span className="ai-sfx-text"> SFX</span>
+              </button>
+
+              <button
+                className={`ai-settings-btn ${showSettings ? "active" : ""}`}
+                onClick={() => { playMedicalSfx("click"); setShowSettings(!showSettings); }}
+                title="Gemini API Key & Model Settings"
+              >
+                ⚙️
+              </button>
+
+              <button className="ai-modal-close-btn" onClick={onClose} aria-label="Close assistant" title="Close">
+                ✕
+              </button>
             </div>
           </div>
-          
-          <div className="ai-header-actions">
-            {/* Medical Sound FX Audio Toggle */}
-            <button
-              type="button"
-              className={`ai-sfx-toggle-btn ${sfxEnabled ? "on" : "off"}`}
-              onClick={toggleSfx}
-              title={sfxEnabled ? "Medical Audio FX Enabled (Click to Mute)" : "Medical Audio FX Muted (Click to Unmute)"}
-            >
-              {sfxEnabled ? "🔊 SFX" : "🔇 SFX"}
-            </button>
 
-            {/* 3-Language Switcher Pill */}
+          {/* Language Switcher Pill Bar */}
+          <div className="ai-header-lang-bar">
             <div className="ai-lang-toggle-group" title="Switch Language / भाषा बदलें / ଭାଷା ବଦଳାନ୍ତୁ">
               <button
                 type="button"
                 className={`ai-lang-pill ${currentLang === "en" ? "active" : ""}`}
                 onClick={() => { playMedicalSfx("click"); handleLanguageChange("en"); }}
               >
-                English
+                <span className="ai-lang-label-full">English</span>
+                <span className="ai-lang-label-short">EN</span>
               </button>
               <button
                 type="button"
                 className={`ai-lang-pill ${currentLang === "hi" ? "active" : ""}`}
                 onClick={() => { playMedicalSfx("click"); handleLanguageChange("hi"); }}
               >
-                हिंदी
+                <span className="ai-lang-label-full">हिंदी</span>
+                <span className="ai-lang-label-short">HI</span>
               </button>
               <button
                 type="button"
                 className={`ai-lang-pill ${currentLang === "or" ? "active" : ""}`}
                 onClick={() => { playMedicalSfx("click"); handleLanguageChange("or"); }}
               >
-                ଓଡ଼ିଆ
+                <span className="ai-lang-label-full">ଓଡ଼ିଆ</span>
+                <span className="ai-lang-label-short">OD</span>
               </button>
             </div>
-
-            <button
-              className={`ai-settings-btn ${showSettings ? "active" : ""}`}
-              onClick={() => { playMedicalSfx("click"); setShowSettings(!showSettings); }}
-              title="Gemini API Key & Model Settings"
-            >
-              ⚙️
-            </button>
-            <button className="ai-modal-close-btn" onClick={onClose} aria-label="Close assistant">
-              ✕
-            </button>
           </div>
         </header>
 
