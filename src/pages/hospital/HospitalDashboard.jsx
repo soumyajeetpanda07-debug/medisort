@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import AddWaste from "./AddWaste";
+import AiSegregationAssistant from "../../components/AiSegregationAssistant";
 import "../../App.css";
 import "./HospitalDashboard.css";
 
@@ -450,6 +451,7 @@ function HospitalDashboard({ onBackToHome }) {
             { icon: "🚛", label: "Pickup Status", onClick: () => { setActiveModal("allPickups"); setSidebarOpen(false); } },
             { icon: "▥", label: "Reports", onClick: () => { document.querySelector(".ms-distribution-card")?.scrollIntoView({ behavior: "smooth" }); setSidebarOpen(false); } },
             { icon: "📖", label: "BMW Guidelines", onClick: () => { setActiveModal("guidelines"); setSidebarOpen(false); } },
+            { icon: "✨", label: "AI Segregation", onClick: () => { setActiveModal("aiAssistant"); setSidebarOpen(false); } },
             { icon: "♙", label: "Profile", onClick: () => { setActiveModal("profile"); setSidebarOpen(false); } },
             { icon: "⚙", label: "Settings", onClick: () => { setActiveModal("settings"); setSidebarOpen(false); } },
           ].map((item) => (
@@ -680,6 +682,7 @@ function HospitalDashboard({ onBackToHome }) {
                   <button className="ms-action blue-action" onClick={handleRequestPickup} disabled={requestingPickup}><span>🚚</span><strong>Request Pickup</strong><small>Dispatch collector</small></button>
                   <button className="ms-action purple-action" onClick={handleExportCSV}><span>📥</span><strong>Export Log</strong><small>CSV report</small></button>
                   <button className="ms-action yellow-action" onClick={() => setActiveModal("guidelines")}><span>📖</span><strong>BMW Rules</strong><small>Segregation guide</small></button>
+                  <button className="ms-action ai-action" onClick={() => setActiveModal("aiAssistant")}><span>✨</span><strong>AI Assistant</strong><small>Camera &amp; Text scan</small></button>
                 </div>
               </div>
 
@@ -962,6 +965,19 @@ function HospitalDashboard({ onBackToHome }) {
             <div className="ms-modal-footer"><button className="ms-btn-primary" onClick={() => setActiveModal(null)}>Understood</button></div>
           </div>
         </div>
+      )}
+
+      {/* AI Segregation Assistant Modal */}
+      {activeModal === "aiAssistant" && (
+        <AiSegregationAssistant
+          isOpen={true}
+          onClose={() => setActiveModal(null)}
+          onApplyWaste={(data) => {
+            sessionStorage.setItem("medisort_prefill_waste", JSON.stringify(data));
+            setActiveModal(null);
+            setPage("addWaste");
+          }}
+        />
       )}
 
       {/* Hospital Profile */}
